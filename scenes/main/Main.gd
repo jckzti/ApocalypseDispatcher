@@ -10,6 +10,8 @@ const ModifierStack = preload("res://scripts/sim/ModifierStack.gd")
 const BusUnit = preload("res://scripts/sim/BusUnit.gd")
 const CardSystem = preload("res://scripts/sim/CardSystem.gd")
 const EvacuationOrder = preload("res://scripts/sim/EvacuationOrder.gd")
+const OperationsMapView = preload("res://scripts/ui/OperationsMapView.gd")
+const RoutePlanner = preload("res://scripts/sim/RoutePlanner.gd")
 const ScoreSystem = preload("res://scripts/sim/ScoreSystem.gd")
 const EndRunReportScene = preload("res://scenes/report/EndRunReport.tscn")
 
@@ -21,6 +23,7 @@ var scenario_def = null
 var modifier_stack = null
 var card_system = null
 var score_system = null
+var route_planner = RoutePlanner.new()
 var report_overlay = null
 var order_serial: int = 1
 var selected_pickup_id: String = ""
@@ -70,16 +73,12 @@ var reroll_cards_button: Button
 var card_offer_container: VBoxContainer
 var event_panel_label: Label
 var event_options_container: VBoxContainer
-var map_panel: Panel
-var map_canvas: Control
+var map_panel: PanelContainer
+var map_canvas: OperationsMapView
 var tick_timer: Timer
 var confirmation_dialog: ConfirmationDialog
 var credits_dialog: AcceptDialog
 var credits_text_label: RichTextLabel
-
-var district_buttons: Dictionary = {}
-var bus_markers: Dictionary = {}
-
 
 func _ready() -> void:
 	_build_ui()
@@ -94,261 +93,329 @@ func _build_ui() -> void:
 	var background := ColorRect.new()
 	background.anchor_right = 1.0
 	background.anchor_bottom = 1.0
-	background.color = Color(0.078, 0.094, 0.11, 1.0)
+	background.color = Color(0.058, 0.072, 0.086, 1.0)
 	add_child(background)
 
 	root_margin = MarginContainer.new()
 	root_margin.anchor_right = 1.0
 	root_margin.anchor_bottom = 1.0
-	root_margin.add_theme_constant_override("margin_left", 18)
-	root_margin.add_theme_constant_override("margin_top", 18)
-	root_margin.add_theme_constant_override("margin_right", 18)
-	root_margin.add_theme_constant_override("margin_bottom", 18)
+	root_margin.add_theme_constant_override("margin_left", 20)
+	root_margin.add_theme_constant_override("margin_top", 20)
+	root_margin.add_theme_constant_override("margin_right", 20)
+	root_margin.add_theme_constant_override("margin_bottom", 20)
 	add_child(root_margin)
 
 	var main_split := HBoxContainer.new()
 	main_split.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	main_split.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	main_split.add_theme_constant_override("separation", 16)
+	main_split.add_theme_constant_override("separation", 18)
 	root_margin.add_child(main_split)
 
 	var left_column := VBoxContainer.new()
 	left_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	left_column.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	left_column.add_theme_constant_override("separation", 10)
+	left_column.size_flags_stretch_ratio = 1.45
+	left_column.add_theme_constant_override("separation", 14)
 	main_split.add_child(left_column)
 
-	var top_bar := HBoxContainer.new()
-	top_bar.add_theme_constant_override("separation", 18)
-	left_column.add_child(top_bar)
-
-	resources_label = Label.new()
-	resources_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	resources_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	resources_label.add_theme_color_override("font_color", Color(0.93, 0.91, 0.83, 1.0))
-	top_bar.add_child(resources_label)
-
-	time_label = Label.new()
-	time_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	time_label.add_theme_color_override("font_color", Color(0.88, 0.75, 0.55, 1.0))
-	top_bar.add_child(time_label)
-
-	var controls_bar := HBoxContainer.new()
-	controls_bar.add_theme_constant_override("separation", 10)
-	left_column.add_child(controls_bar)
-
-	scenario_select = OptionButton.new()
-	scenario_select.custom_minimum_size = Vector2(260, 0)
-	controls_bar.add_child(scenario_select)
-
-	new_run_button = Button.new()
-	new_run_button.text = "Novo Cenario"
-	new_run_button.tooltip_text = "Reinicia a run usando o cenario atualmente selecionado."
-	new_run_button.pressed.connect(_on_new_run_pressed)
-	controls_bar.add_child(new_run_button)
-
-	save_button = Button.new()
-	save_button.text = "Salvar"
-	save_button.tooltip_text = "Grava a run atual em user://saves/current_run.json."
-	save_button.pressed.connect(_on_save_pressed)
-	controls_bar.add_child(save_button)
-
-	load_button = Button.new()
-	load_button.text = "Carregar"
-	load_button.tooltip_text = "Carrega o save manual ou, se nao houver, o autosave mais recente."
-	load_button.pressed.connect(_on_load_pressed)
-	controls_bar.add_child(load_button)
-
-	simulation_button = Button.new()
-	_update_simulation_button_text()
-	simulation_button.tooltip_text = "Alterna entre rodar e pausar a simulacao."
-	simulation_button.pressed.connect(_on_simulation_toggle_pressed)
-	controls_bar.add_child(simulation_button)
-
-	retire_run_button = Button.new()
-	retire_run_button.text = "Extrair Relatorio"
-	retire_run_button.visible = false
-	retire_run_button.tooltip_text = "Encerra voluntariamente a run infinita quando uma janela de extracao estiver disponivel."
-	retire_run_button.pressed.connect(_on_retire_run_pressed)
-	controls_bar.add_child(retire_run_button)
-
-	step_button = Button.new()
-	step_button.text = "Avancar 1 Min"
-	step_button.tooltip_text = "Avanca exatamente um minuto sem destravar a simulacao continua."
-	step_button.pressed.connect(_on_step_pressed)
-	controls_bar.add_child(step_button)
-
-	create_order_button = Button.new()
-	create_order_button.text = "Criar Rota"
-	create_order_button.disabled = true
-	create_order_button.tooltip_text = "Cria uma ordem de evacuacao entre a origem e o abrigo selecionados."
-	create_order_button.pressed.connect(_on_create_order_pressed)
-	controls_bar.add_child(create_order_button)
-
-	clear_selection_button = Button.new()
-	clear_selection_button.text = "Limpar Selecao"
-	clear_selection_button.tooltip_text = "Remove a origem e o abrigo atualmente marcados."
-	clear_selection_button.pressed.connect(_on_clear_selection_pressed)
-	controls_bar.add_child(clear_selection_button)
-
-	map_panel = Panel.new()
-	map_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	map_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	map_panel.custom_minimum_size = Vector2(920, 620)
-	left_column.add_child(map_panel)
-
-	map_canvas = Control.new()
-	map_canvas.anchor_right = 1.0
-	map_canvas.anchor_bottom = 1.0
-	map_canvas.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	map_canvas.grow_vertical = Control.GROW_DIRECTION_BOTH
-	map_panel.add_child(map_canvas)
-
-	var right_column := VBoxContainer.new()
-	right_column.custom_minimum_size = Vector2(360, 0)
-	right_column.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	right_column.add_theme_constant_override("separation", 10)
-	main_split.add_child(right_column)
+	var header_stack := _build_surface_section(left_column, Color(0.08, 0.1, 0.12, 0.92), Color(0.42, 0.31, 0.21, 0.6), 18, 10)
+	var header_row := HBoxContainer.new()
+	header_row.add_theme_constant_override("separation", 14)
+	header_stack.add_child(header_row)
 
 	title_label = Label.new()
 	title_label.text = "Despachante do Apocalipse"
-	title_label.add_theme_font_size_override("font_size", 24)
-	title_label.add_theme_color_override("font_color", Color(0.95, 0.9, 0.8, 1.0))
-	right_column.add_child(title_label)
+	title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title_label.add_theme_font_size_override("font_size", 28)
+	title_label.add_theme_color_override("font_color", Color(0.96, 0.92, 0.84, 1.0))
+	header_row.add_child(title_label)
 
 	var version_row := HBoxContainer.new()
 	version_row.add_theme_constant_override("separation", 8)
-	right_column.add_child(version_row)
+	header_row.add_child(version_row)
 
 	version_label = Label.new()
 	version_label.text = "Versao %s" % GameConstants.GAME_VERSION
-	version_label.add_theme_color_override("font_color", Color(0.8, 0.8, 0.76, 1.0))
+	version_label.add_theme_color_override("font_color", Color(0.78, 0.8, 0.76, 1.0))
 	version_row.add_child(version_label)
 
 	credits_button = Button.new()
 	credits_button.text = "Creditos"
 	credits_button.tooltip_text = "Abre a pagina de creditos e licencas da demo."
 	credits_button.pressed.connect(_on_credits_pressed)
+	_apply_button_style(credits_button, Color(0.45, 0.36, 0.26, 0.9), Color(0.82, 0.62, 0.34, 0.75))
 	version_row.add_child(credits_button)
 
-	tutorial_status_label = Label.new()
-	tutorial_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	tutorial_status_label.add_theme_color_override("font_color", Color(0.92, 0.87, 0.72, 1.0))
-	right_column.add_child(tutorial_status_label)
+	var telemetry_row := HFlowContainer.new()
+	telemetry_row.alignment = FlowContainer.ALIGNMENT_BEGIN
+	telemetry_row.add_theme_constant_override("h_separation", 10)
+	telemetry_row.add_theme_constant_override("v_separation", 8)
+	header_stack.add_child(telemetry_row)
 
-	leaderboard_label = Label.new()
-	leaderboard_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	leaderboard_label.add_theme_color_override("font_color", Color(0.77, 0.86, 0.92, 1.0))
-	right_column.add_child(leaderboard_label)
+	resources_label = Label.new()
+	resources_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	resources_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	resources_label.add_theme_color_override("font_color", Color(0.93, 0.91, 0.83, 1.0))
+	telemetry_row.add_child(resources_label)
 
-	var accessibility_row := HBoxContainer.new()
-	accessibility_row.add_theme_constant_override("separation", 8)
-	right_column.add_child(accessibility_row)
+	time_label = Label.new()
+	time_label.add_theme_color_override("font_color", Color(0.95, 0.76, 0.52, 1.0))
+	telemetry_row.add_child(time_label)
+
+	var controls_stack := _build_surface_section(left_column, Color(0.09, 0.11, 0.14, 0.94), Color(0.19, 0.47, 0.56, 0.58), 16, 10)
+	var scenario_row := HFlowContainer.new()
+	scenario_row.alignment = FlowContainer.ALIGNMENT_BEGIN
+	scenario_row.add_theme_constant_override("h_separation", 10)
+	scenario_row.add_theme_constant_override("v_separation", 10)
+	controls_stack.add_child(scenario_row)
+
+	scenario_select = OptionButton.new()
+	scenario_select.custom_minimum_size = Vector2(280, 0)
+	_apply_button_style(scenario_select, Color(0.12, 0.16, 0.19, 0.95), Color(0.3, 0.4, 0.46, 0.85))
+	scenario_row.add_child(scenario_select)
+
+	new_run_button = Button.new()
+	new_run_button.text = "Novo Cenario"
+	new_run_button.tooltip_text = "Reinicia a run usando o cenario atualmente selecionado."
+	new_run_button.pressed.connect(_on_new_run_pressed)
+	_apply_button_style(new_run_button, Color(0.4, 0.23, 0.16, 0.95), Color(0.84, 0.47, 0.28, 0.9))
+	scenario_row.add_child(new_run_button)
+
+	save_button = Button.new()
+	save_button.text = "Salvar"
+	save_button.tooltip_text = "Grava a run atual em user://saves/current_run.json."
+	save_button.pressed.connect(_on_save_pressed)
+	_apply_button_style(save_button, Color(0.14, 0.24, 0.29, 0.94), Color(0.34, 0.68, 0.75, 0.86))
+	scenario_row.add_child(save_button)
+
+	load_button = Button.new()
+	load_button.text = "Carregar"
+	load_button.tooltip_text = "Carrega o save manual ou, se nao houver, o autosave mais recente."
+	load_button.pressed.connect(_on_load_pressed)
+	_apply_button_style(load_button, Color(0.14, 0.24, 0.29, 0.94), Color(0.34, 0.68, 0.75, 0.86))
+	scenario_row.add_child(load_button)
+
+	var action_row := HFlowContainer.new()
+	action_row.alignment = FlowContainer.ALIGNMENT_BEGIN
+	action_row.add_theme_constant_override("h_separation", 10)
+	action_row.add_theme_constant_override("v_separation", 10)
+	controls_stack.add_child(action_row)
+
+	simulation_button = Button.new()
+	_update_simulation_button_text()
+	simulation_button.tooltip_text = "Alterna entre rodar e pausar a simulacao."
+	simulation_button.pressed.connect(_on_simulation_toggle_pressed)
+	_apply_button_style(simulation_button, Color(0.18, 0.29, 0.19, 0.96), Color(0.49, 0.8, 0.45, 0.92))
+	action_row.add_child(simulation_button)
+
+	step_button = Button.new()
+	step_button.text = "Avancar 1 Min"
+	step_button.tooltip_text = "Avanca exatamente um minuto sem destravar a simulacao continua."
+	step_button.pressed.connect(_on_step_pressed)
+	_apply_button_style(step_button, Color(0.19, 0.22, 0.27, 0.96), Color(0.52, 0.62, 0.78, 0.86))
+	action_row.add_child(step_button)
+
+	create_order_button = Button.new()
+	create_order_button.text = "Criar Rota"
+	create_order_button.disabled = true
+	create_order_button.tooltip_text = "Cria uma ordem de evacuacao entre a origem e o abrigo selecionados."
+	create_order_button.pressed.connect(_on_create_order_pressed)
+	_apply_button_style(create_order_button, Color(0.42, 0.25, 0.14, 0.96), Color(0.93, 0.7, 0.32, 0.94))
+	action_row.add_child(create_order_button)
+
+	clear_selection_button = Button.new()
+	clear_selection_button.text = "Limpar Selecao"
+	clear_selection_button.tooltip_text = "Remove a origem e o abrigo atualmente marcados."
+	clear_selection_button.pressed.connect(_on_clear_selection_pressed)
+	_apply_button_style(clear_selection_button, Color(0.2, 0.14, 0.15, 0.95), Color(0.66, 0.41, 0.45, 0.82))
+	action_row.add_child(clear_selection_button)
+
+	retire_run_button = Button.new()
+	retire_run_button.text = "Extrair Relatorio"
+	retire_run_button.visible = false
+	retire_run_button.tooltip_text = "Encerra voluntariamente a run infinita quando uma janela de extracao estiver disponivel."
+	retire_run_button.pressed.connect(_on_retire_run_pressed)
+	_apply_button_style(retire_run_button, Color(0.27, 0.18, 0.26, 0.96), Color(0.72, 0.48, 0.79, 0.86))
+	action_row.add_child(retire_run_button)
+
+	var settings_row := HFlowContainer.new()
+	settings_row.alignment = FlowContainer.ALIGNMENT_BEGIN
+	settings_row.add_theme_constant_override("h_separation", 10)
+	settings_row.add_theme_constant_override("v_separation", 10)
+	controls_stack.add_child(settings_row)
 
 	pause_on_event_check = CheckBox.new()
 	pause_on_event_check.text = "Pausar em evento"
 	pause_on_event_check.tooltip_text = "Pausa automaticamente a simulacao quando um evento entra na fila."
 	pause_on_event_check.toggled.connect(_on_pause_on_event_toggled)
-	accessibility_row.add_child(pause_on_event_check)
+	_apply_button_style(pause_on_event_check, Color(0.13, 0.17, 0.21, 0.95), Color(0.29, 0.42, 0.48, 0.82))
+	settings_row.add_child(pause_on_event_check)
 
 	colorblind_mode_check = CheckBox.new()
 	colorblind_mode_check.text = "Modo daltônico"
 	colorblind_mode_check.tooltip_text = "Troca as cores principais do mapa por uma paleta com contraste mais seguro."
 	colorblind_mode_check.toggled.connect(_on_colorblind_mode_toggled)
-	accessibility_row.add_child(colorblind_mode_check)
-
-	var controls_row := HBoxContainer.new()
-	controls_row.add_theme_constant_override("separation", 8)
-	right_column.add_child(controls_row)
+	_apply_button_style(colorblind_mode_check, Color(0.13, 0.17, 0.21, 0.95), Color(0.29, 0.42, 0.48, 0.82))
+	settings_row.add_child(colorblind_mode_check)
 
 	font_size_select = OptionButton.new()
 	font_size_select.tooltip_text = "Ajusta o tamanho base da fonte da interface."
 	font_size_select.item_selected.connect(_on_font_size_selected)
-	controls_row.add_child(font_size_select)
+	_apply_button_style(font_size_select, Color(0.12, 0.16, 0.19, 0.95), Color(0.3, 0.4, 0.46, 0.85))
+	settings_row.add_child(font_size_select)
 
 	map_filter_select = OptionButton.new()
 	map_filter_select.tooltip_text = "Filtra o mapa para destacar distritos por tipo de risco."
 	map_filter_select.item_selected.connect(_on_map_filter_selected)
-	controls_row.add_child(map_filter_select)
+	_apply_button_style(map_filter_select, Color(0.12, 0.16, 0.19, 0.95), Color(0.3, 0.4, 0.46, 0.85))
+	settings_row.add_child(map_filter_select)
 
 	locale_select = OptionButton.new()
 	locale_select.tooltip_text = "Troca o idioma da interface principal."
 	locale_select.item_selected.connect(_on_locale_selected)
-	controls_row.add_child(locale_select)
+	_apply_button_style(locale_select, Color(0.12, 0.16, 0.19, 0.95), Color(0.3, 0.4, 0.46, 0.85))
+	settings_row.add_child(locale_select)
+
+	map_panel = PanelContainer.new()
+	map_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	map_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	map_panel.custom_minimum_size = Vector2(0, 620)
+	map_panel.add_theme_stylebox_override("panel", _make_surface_style(Color(0.07, 0.09, 0.11, 0.98), Color(0.45, 0.34, 0.2, 0.44), 24))
+	left_column.add_child(map_panel)
+
+	var map_margin := MarginContainer.new()
+	map_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	map_margin.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	map_margin.add_theme_constant_override("margin_left", 10)
+	map_margin.add_theme_constant_override("margin_top", 10)
+	map_margin.add_theme_constant_override("margin_right", 10)
+	map_margin.add_theme_constant_override("margin_bottom", 10)
+	map_panel.add_child(map_margin)
+
+	map_canvas = OperationsMapView.new()
+	map_canvas.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	map_canvas.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	map_canvas.custom_minimum_size = Vector2(0, 560)
+	map_canvas.district_activated.connect(_on_district_pressed)
+	map_margin.add_child(map_canvas)
+
+	var right_column := VBoxContainer.new()
+	right_column.custom_minimum_size = Vector2(390, 0)
+	right_column.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	right_column.size_flags_stretch_ratio = 0.72
+	main_split.add_child(right_column)
+
+	var right_scroll := ScrollContainer.new()
+	right_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	right_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	right_column.add_child(right_scroll)
+
+	var right_stack := VBoxContainer.new()
+	right_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	right_stack.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	right_stack.custom_minimum_size = Vector2(360, 0)
+	right_stack.add_theme_constant_override("separation", 12)
+	right_scroll.add_child(right_stack)
+
+	var run_stack := _build_surface_section(right_stack, Color(0.1, 0.11, 0.14, 0.95), Color(0.44, 0.33, 0.2, 0.5), 16, 10)
+
+	tutorial_status_label = Label.new()
+	tutorial_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	tutorial_status_label.add_theme_color_override("font_color", Color(0.92, 0.87, 0.72, 1.0))
+	run_stack.add_child(tutorial_status_label)
+
+	leaderboard_label = Label.new()
+	leaderboard_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	leaderboard_label.add_theme_color_override("font_color", Color(0.77, 0.86, 0.92, 1.0))
+	run_stack.add_child(leaderboard_label)
+
+	var intel_stack := _build_surface_section(right_stack, Color(0.09, 0.11, 0.13, 0.96), Color(0.18, 0.48, 0.56, 0.5), 16, 10)
 
 	log_search_input = LineEdit.new()
 	log_search_input.placeholder_text = "Buscar no log"
 	log_search_input.tooltip_text = "Filtra o historico por palavras-chave."
 	log_search_input.text_changed.connect(_on_log_filter_changed)
-	right_column.add_child(log_search_input)
+	_apply_line_edit_style(log_search_input)
 
 	selection_label = Label.new()
 	selection_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	selection_label.add_theme_color_override("font_color", Color(0.86, 0.86, 0.82, 1.0))
-	right_column.add_child(selection_label)
+	intel_stack.add_child(selection_label)
 
 	district_details_label = Label.new()
 	district_details_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	district_details_label.add_theme_color_override("font_color", Color(0.8, 0.87, 0.9, 1.0))
-	right_column.add_child(district_details_label)
+	intel_stack.add_child(district_details_label)
 
 	order_status_label = Label.new()
 	order_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	order_status_label.add_theme_color_override("font_color", Color(0.88, 0.84, 0.72, 1.0))
-	right_column.add_child(order_status_label)
+	intel_stack.add_child(order_status_label)
 
 	bus_status_label = Label.new()
 	bus_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	bus_status_label.add_theme_color_override("font_color", Color(0.93, 0.76, 0.63, 1.0))
-	right_column.add_child(bus_status_label)
+	intel_stack.add_child(bus_status_label)
+
+	var cards_stack := _build_surface_section(right_stack, Color(0.1, 0.1, 0.12, 0.96), Color(0.62, 0.48, 0.25, 0.42), 16, 10)
 
 	cards_title_label = Label.new()
 	cards_title_label.text = "Cartas"
 	cards_title_label.add_theme_font_size_override("font_size", 20)
 	cards_title_label.add_theme_color_override("font_color", Color(0.88, 0.84, 0.74, 1.0))
-	right_column.add_child(cards_title_label)
+	cards_stack.add_child(cards_title_label)
 
-	var cards_controls := HBoxContainer.new()
-	cards_controls.add_theme_constant_override("separation", 8)
-	right_column.add_child(cards_controls)
+	var cards_controls := HFlowContainer.new()
+	cards_controls.alignment = FlowContainer.ALIGNMENT_BEGIN
+	cards_controls.add_theme_constant_override("h_separation", 8)
+	cards_controls.add_theme_constant_override("v_separation", 8)
+	cards_stack.add_child(cards_controls)
 
 	generate_cards_button = Button.new()
 	generate_cards_button.text = "Gerar Oferta"
 	generate_cards_button.tooltip_text = "Forca uma nova oferta de cartas quando a feature estiver liberada."
 	generate_cards_button.pressed.connect(_on_generate_cards_pressed)
+	_apply_button_style(generate_cards_button, Color(0.22, 0.28, 0.2, 0.95), Color(0.59, 0.78, 0.46, 0.82))
 	cards_controls.add_child(generate_cards_button)
 
 	reroll_cards_button = Button.new()
 	reroll_cards_button.text = "Reroll"
 	reroll_cards_button.tooltip_text = "Gasta verba para trocar a oferta atual por outra."
 	reroll_cards_button.pressed.connect(_on_reroll_cards_pressed)
+	_apply_button_style(reroll_cards_button, Color(0.27, 0.22, 0.16, 0.95), Color(0.83, 0.67, 0.35, 0.84))
 	cards_controls.add_child(reroll_cards_button)
 
 	card_offer_container = VBoxContainer.new()
 	card_offer_container.add_theme_constant_override("separation", 6)
-	right_column.add_child(card_offer_container)
+	cards_stack.add_child(card_offer_container)
+
+	var events_stack := _build_surface_section(right_stack, Color(0.11, 0.1, 0.1, 0.97), Color(0.64, 0.34, 0.28, 0.5), 16, 10)
 
 	events_title_label = Label.new()
 	events_title_label.text = "Evento Atual"
 	events_title_label.add_theme_font_size_override("font_size", 20)
 	events_title_label.add_theme_color_override("font_color", Color(0.9, 0.78, 0.74, 1.0))
-	right_column.add_child(events_title_label)
+	events_stack.add_child(events_title_label)
 
 	event_panel_label = Label.new()
 	event_panel_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	event_panel_label.add_theme_color_override("font_color", Color(0.9, 0.86, 0.82, 1.0))
-	right_column.add_child(event_panel_label)
+	events_stack.add_child(event_panel_label)
 
 	event_options_container = VBoxContainer.new()
 	event_options_container.add_theme_constant_override("separation", 6)
-	right_column.add_child(event_options_container)
+	events_stack.add_child(event_options_container)
+
+	var log_stack := _build_surface_section(right_stack, Color(0.09, 0.1, 0.13, 0.97), Color(0.22, 0.34, 0.46, 0.5), 16, 10)
+	log_stack.add_child(log_search_input)
 
 	log_label = RichTextLabel.new()
-	log_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	log_label.custom_minimum_size = Vector2(0, 260)
 	log_label.bbcode_enabled = false
 	log_label.scroll_active = true
 	log_label.fit_content = false
-	right_column.add_child(log_label)
+	log_label.add_theme_color_override("default_color", Color(0.85, 0.88, 0.9, 1.0))
+	log_stack.add_child(log_label)
 
 	tick_timer = Timer.new()
 	tick_timer.wait_time = 0.25
@@ -390,6 +457,67 @@ func _build_ui() -> void:
 	add_child(credits_dialog)
 
 	score_system = ScoreSystem.new()
+
+
+func _build_surface_section(parent: Control, fill_color: Color, border_color: Color, padding: int = 16, separation: int = 10) -> VBoxContainer:
+	var panel := PanelContainer.new()
+	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.add_theme_stylebox_override("panel", _make_surface_style(fill_color, border_color, 20))
+	parent.add_child(panel)
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", padding)
+	margin.add_theme_constant_override("margin_top", padding)
+	margin.add_theme_constant_override("margin_right", padding)
+	margin.add_theme_constant_override("margin_bottom", padding)
+	panel.add_child(margin)
+
+	var stack := VBoxContainer.new()
+	stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	stack.add_theme_constant_override("separation", separation)
+	margin.add_child(stack)
+	return stack
+
+
+func _make_surface_style(fill_color: Color, border_color: Color, radius: int = 18) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = fill_color
+	style.border_color = border_color
+	style.border_width_left = 1
+	style.border_width_top = 1
+	style.border_width_right = 1
+	style.border_width_bottom = 1
+	style.corner_radius_top_left = radius
+	style.corner_radius_top_right = radius
+	style.corner_radius_bottom_right = radius
+	style.corner_radius_bottom_left = radius
+	style.shadow_color = Color(0, 0, 0, 0.24)
+	style.shadow_size = 10
+	style.content_margin_left = 0
+	style.content_margin_top = 0
+	style.content_margin_right = 0
+	style.content_margin_bottom = 0
+	return style
+
+
+func _apply_button_style(button: BaseButton, fill_color: Color, border_color: Color) -> void:
+	button.add_theme_stylebox_override("normal", _make_surface_style(fill_color, border_color, 14))
+	button.add_theme_stylebox_override("hover", _make_surface_style(fill_color.lightened(0.08), border_color.lightened(0.18), 14))
+	button.add_theme_stylebox_override("pressed", _make_surface_style(fill_color.darkened(0.1), border_color.lightened(0.1), 14))
+	button.add_theme_stylebox_override("focus", _make_surface_style(fill_color.lightened(0.03), border_color.lightened(0.22), 14))
+	button.add_theme_stylebox_override("disabled", _make_surface_style(fill_color.darkened(0.18), Color(border_color.r, border_color.g, border_color.b, 0.22), 14))
+	button.add_theme_color_override("font_color", Color(0.94, 0.94, 0.91, 1.0))
+	button.add_theme_color_override("font_pressed_color", Color(0.98, 0.98, 0.96, 1.0))
+	button.add_theme_color_override("font_disabled_color", Color(0.58, 0.6, 0.64, 1.0))
+	button.add_theme_constant_override("h_separation", 6)
+
+
+func _apply_line_edit_style(field: LineEdit) -> void:
+	field.add_theme_stylebox_override("normal", _make_surface_style(Color(0.11, 0.14, 0.18, 0.98), Color(0.28, 0.38, 0.44, 0.82), 14))
+	field.add_theme_stylebox_override("focus", _make_surface_style(Color(0.13, 0.17, 0.21, 0.98), Color(0.56, 0.72, 0.86, 0.84), 14))
+	field.add_theme_stylebox_override("read_only", _make_surface_style(Color(0.11, 0.14, 0.18, 0.98), Color(0.22, 0.28, 0.34, 0.6), 14))
+	field.add_theme_color_override("font_color", Color(0.93, 0.94, 0.92, 1.0))
+	field.add_theme_color_override("font_placeholder_color", Color(0.58, 0.62, 0.66, 1.0))
 
 
 func _load_settings_controls() -> void:
@@ -459,7 +587,9 @@ func _apply_accessibility_settings() -> void:
 		load_button,
 		simulation_button,
 		retire_run_button,
+		step_button,
 		create_order_button,
+		clear_selection_button,
 		generate_cards_button,
 		reroll_cards_button,
 		pause_on_event_check,
@@ -496,8 +626,7 @@ func _apply_accessibility_settings() -> void:
 		credits_text_label.add_theme_font_size_override("normal_font_size", base_font)
 	_refresh_log_view()
 	if runner != null:
-		_refresh_district_buttons()
-		_refresh_bus_markers()
+		_refresh_map_view()
 
 
 func _on_pause_on_event_toggled(enabled: bool) -> void:
@@ -526,8 +655,7 @@ func _on_map_filter_selected(index: int) -> void:
 	map_filter_mode = String(map_filter_select.get_item_metadata(index))
 	SettingsService.set_setting(&"map_filter", map_filter_mode)
 	if runner != null:
-		_refresh_district_buttons()
-		_refresh_bus_markers()
+		_refresh_map_view()
 
 
 func _on_locale_selected(index: int) -> void:
@@ -758,28 +886,7 @@ func _default_bus_start_district() -> String:
 
 
 func _rebuild_map() -> void:
-	for child in map_canvas.get_children():
-		child.queue_free()
-	district_buttons.clear()
-	bus_markers.clear()
-
-	var district_ids: Array = graph.district_states.keys()
-	district_ids.sort()
-	for district_id in district_ids:
-		var district = graph.get_district(String(district_id))
-		var button := Button.new()
-		button.toggle_mode = false
-		button.size = Vector2(170, 72)
-		button.pressed.connect(_on_district_pressed.bind(district.id))
-		map_canvas.add_child(button)
-		district_buttons[district.id] = button
-
-	for bus_id in runner.state.bus_units.keys():
-		var marker := ColorRect.new()
-		marker.size = Vector2(18, 18)
-		marker.color = Color(0.98, 0.48, 0.35, 1.0)
-		map_canvas.add_child(marker)
-		bus_markers[String(bus_id)] = marker
+	_refresh_map_view()
 
 
 func _refresh_ui() -> void:
@@ -805,10 +912,20 @@ func _refresh_ui() -> void:
 	retire_run_button.disabled = not _can_retire_run()
 	create_order_button.disabled = _run_over() or selected_pickup_id.is_empty() or selected_shelter_id.is_empty()
 
-	selection_label.text = _tr("ui.selection_summary", {
-		"pickup": selected_pickup_id if not selected_pickup_id.is_empty() else "-",
-		"shelter": selected_shelter_id if not selected_shelter_id.is_empty() else "-",
-	})
+	var selection_lines: Array = [_tr("ui.selection_summary", {
+		"pickup": _district_label(selected_pickup_id),
+		"shelter": _district_label(selected_shelter_id),
+	})]
+	var preview_route := _preview_route()
+	if not preview_route.is_empty():
+		if bool(preview_route.get("reachable", false)):
+			selection_lines.append(_tr("ui.route_preview", {
+				"distance": "%.1f" % float(preview_route.get("total_distance_km", 0.0)),
+				"segments": int(Array(preview_route.get("road_ids", [])).size()),
+			}))
+		else:
+			selection_lines.append(_tr("ui.route_preview_unreachable"))
+	selection_label.text = "\n".join(selection_lines)
 
 	var focused_district = graph.get_district(focused_district_id) if not focused_district_id.is_empty() else null
 	if focused_district != null:
@@ -819,6 +936,12 @@ func _refresh_ui() -> void:
 			"danger": "%.1f" % focused_district.danger,
 			"collapse": "%.1f" % focused_district.collapse,
 		})
+		if focused_district.is_shelter:
+			var shelter = graph.get_shelter(focused_district.id)
+			if shelter != null:
+				district_details_label.text += "\nAbrigo ocupado: %d / %d" % [shelter.total_occupants(), shelter.capacity]
+		elif not focused_district.tags.is_empty():
+			district_details_label.text += "\nZona: %s" % ", ".join(Array(focused_district.tags))
 	else:
 		district_details_label.text = _tr("ui.district_empty")
 
@@ -827,11 +950,14 @@ func _refresh_ui() -> void:
 	var order_lines: Array = []
 	for order_id in active_orders:
 		var order = runner.state.evacuation_orders[order_id]
-		order_lines.append("%s: %s -> %s (%s)" % [
-			order.id,
-			order.pickup_district_id,
-			order.dropoff_shelter_id,
-			"ativa" if order.active else "encerrada",
+		var assigned_buses: Array = []
+		for bus_id in Array(order.assigned_bus_ids):
+			assigned_buses.append(_bus_label(String(bus_id)))
+		order_lines.append("%s -> %s | %s | %s" % [
+			_district_label(order.pickup_district_id),
+			_district_label(order.dropoff_shelter_id),
+			_tr("ui.order_status_active") if order.active else _tr("ui.order_status_closed"),
+			", ".join(assigned_buses) if not assigned_buses.is_empty() else _tr("ui.fleet_empty"),
 		])
 	order_status_label.text = "%s\n%s" % [
 		_tr("ui.orders_title"),
@@ -841,11 +967,12 @@ func _refresh_ui() -> void:
 	var bus_lines: Array = []
 	for bus_id in runner.state.bus_units.keys():
 		var bus = runner.state.bus_units[bus_id]
-		bus_lines.append("%s: %s @ %s | carga %d | diesel %.1f" % [
-			bus.id,
-			bus.state,
-			bus.current_district_id if not bus.current_district_id.is_empty() else "estrada",
+		bus_lines.append("%s | %s | %s | carga %d/%d | diesel %.1f" % [
+			_bus_label(String(bus_id)),
+			_format_bus_state(bus.state),
+			_bus_location_label(bus),
 			bus.total_passengers(),
+			bus.capacity,
 			bus.fuel_current,
 		])
 	bus_status_label.text = "%s\n%s" % [
@@ -855,10 +982,77 @@ func _refresh_ui() -> void:
 
 	_refresh_tutorial_ui()
 	_refresh_leaderboard_ui()
-	_refresh_district_buttons()
-	_refresh_bus_markers()
+	_refresh_map_view()
 	_refresh_card_ui()
 	_refresh_event_ui()
+
+
+func _refresh_map_view() -> void:
+	if map_canvas == null:
+		return
+	var preview_route := _preview_route()
+	map_canvas.sync_from_runtime(graph, runner.state if runner != null else null, {
+		"selected_pickup_id": selected_pickup_id,
+		"selected_shelter_id": selected_shelter_id,
+		"focused_district_id": focused_district_id,
+		"map_filter_mode": map_filter_mode,
+		"colorblind_mode": bool(SettingsService.get_setting(&"colorblind_mode", false)),
+		"font_scale": float(SettingsService.get_setting(&"font_scale", 1.0)),
+		"preview_route_road_ids": Array(preview_route.get("road_ids", [])).duplicate(true) if bool(preview_route.get("reachable", false)) else [],
+		"legend_title": _tr("ui.map_legend_title"),
+		"legend_body": _tr("ui.map_legend_body"),
+		"legend_origin_label": _tr("ui.map_chip_origin"),
+		"legend_shelter_label": _tr("ui.map_chip_shelter"),
+		"legend_active_label": _tr("ui.map_chip_active_routes"),
+	})
+
+
+func _preview_route() -> Dictionary:
+	if graph == null or selected_pickup_id.is_empty() or selected_shelter_id.is_empty():
+		return {}
+	return route_planner.find_route(graph, selected_pickup_id, selected_shelter_id)
+
+
+func _district_label(district_id: String) -> String:
+	if district_id.is_empty():
+		return "-"
+	if graph == null:
+		return district_id
+	var district = graph.get_district(district_id)
+	return district.name if district != null else district_id
+
+
+func _bus_label(bus_id: String) -> String:
+	if runner == null:
+		return bus_id
+	var bus = runner.state.bus_units.get(bus_id)
+	if bus == null:
+		return bus_id
+	return String(bus.name if not String(bus.name).is_empty() else bus.id)
+
+
+func _format_bus_state(state_id: String) -> String:
+	match state_id:
+		"idle":
+			return _tr("ui.bus_state_idle")
+		"to_pickup":
+			return _tr("ui.bus_state_to_pickup")
+		"loading":
+			return _tr("ui.bus_state_loading")
+		"to_dropoff":
+			return _tr("ui.bus_state_to_dropoff")
+		"unloading":
+			return _tr("ui.bus_state_unloading")
+		"disabled":
+			return _tr("ui.bus_state_disabled")
+		_:
+			return state_id
+
+
+func _bus_location_label(bus) -> String:
+	if bus.current_district_id.is_empty():
+		return _tr("ui.bus_location_road")
+	return _district_label(bus.current_district_id)
 
 
 func _refresh_tutorial_ui() -> void:
@@ -965,37 +1159,6 @@ func _refresh_leaderboard_ui() -> void:
 	leaderboard_label.text = "\n".join(lines)
 
 
-func _refresh_district_buttons() -> void:
-	for district_id in district_buttons.keys():
-		var button = district_buttons[district_id]
-		var district = graph.get_district(String(district_id))
-		button.visible = _district_matches_filter(district)
-		button.text = "%s\nPop %d | P %.0f | D %.0f" % [
-			district.name,
-			district.total_population(),
-			district.panic,
-			district.danger,
-		]
-		button.tooltip_text = "%s\nPopulacao: %d\nPanico: %.1f\nPerigo: %.1f\nColapso: %.1f%s" % [
-			district.name,
-			district.total_population(),
-			district.panic,
-			district.danger,
-			district.collapse,
-			"\nAbrigo ativo" if district.is_shelter else "",
-		]
-		button.position = _district_button_position(district)
-		button.modulate = _district_button_color(district)
-
-
-func _refresh_bus_markers() -> void:
-	for bus_id in bus_markers.keys():
-		var marker = bus_markers[bus_id]
-		var bus = runner.state.bus_units[bus_id]
-		marker.color = Color(0.98, 0.48, 0.35, 1.0) if not bool(SettingsService.get_setting(&"colorblind_mode", false)) else Color(0.98, 0.85, 0.3, 1.0)
-		marker.position = _bus_marker_position(bus)
-
-
 func _refresh_card_ui() -> void:
 	var cards_unlocked := _cards_feature_unlocked()
 	generate_cards_button.disabled = card_system == null or _run_over() or not cards_unlocked
@@ -1024,6 +1187,7 @@ func _refresh_card_ui() -> void:
 		button.text = "%s [%s]\n%s" % [card_def.name, card_def.rarity, card_def.description]
 		button.custom_minimum_size = Vector2(0, 72)
 		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_apply_button_style(button, Color(0.16, 0.18, 0.14, 0.96), Color(0.74, 0.62, 0.34, 0.66))
 		button.pressed.connect(_on_card_chosen.bind(card_def.id))
 		card_offer_container.add_child(button)
 
@@ -1050,55 +1214,9 @@ func _refresh_event_ui() -> void:
 		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		button.disabled = _run_over()
 		button.tooltip_text = _describe_event_option(Dictionary(option))
+		_apply_button_style(button, Color(0.21, 0.15, 0.14, 0.96), Color(0.82, 0.48, 0.34, 0.72))
 		button.pressed.connect(_on_event_option_pressed.bind(String(current_event.get("event_id", "")), String(option.get("id", "")), Dictionary(option).duplicate(true)))
 		event_options_container.add_child(button)
-
-
-func _district_button_position(district) -> Vector2:
-	var size := map_canvas.size
-	var button_size := Vector2(170, 72)
-	return Vector2(size.x * district.x, size.y * district.y) - (button_size * 0.5)
-
-
-func _district_button_color(district) -> Color:
-	var colorblind_mode := bool(SettingsService.get_setting(&"colorblind_mode", false))
-	if colorblind_mode:
-		if district.id == selected_pickup_id:
-			return Color(0.88, 0.55, 0.12, 1.0)
-		if district.id == selected_shelter_id:
-			return Color(0.15, 0.68, 0.76, 1.0)
-		if district.is_shelter:
-			return Color(0.19, 0.45, 0.78, 1.0)
-		if district.danger >= 65.0:
-			return Color(0.94, 0.82, 0.25, 1.0)
-		return Color(0.3, 0.32, 0.36, 1.0)
-	if district.id == selected_pickup_id:
-		return Color(0.48, 0.78, 0.57, 1.0)
-	if district.id == selected_shelter_id:
-		return Color(0.45, 0.62, 0.9, 1.0)
-	if district.is_shelter:
-		return Color(0.36, 0.48, 0.7, 1.0)
-	if district.danger >= 65.0:
-		return Color(0.82, 0.38, 0.28, 1.0)
-	return Color(0.24, 0.28, 0.34, 1.0)
-
-
-func _bus_marker_position(bus) -> Vector2:
-	if not bus.current_road_id.is_empty():
-		var road = graph.get_road(bus.current_road_id)
-		if road != null:
-			var from_district = graph.get_district(road.from_id)
-			var to_district = graph.get_district(road.to_id)
-			if from_district != null and to_district != null and road.length_km > 0.0:
-				var origin := Vector2(map_canvas.size.x * from_district.x, map_canvas.size.y * from_district.y)
-				var target := Vector2(map_canvas.size.x * to_district.x, map_canvas.size.y * to_district.y)
-				var traveled_ratio := clampf((road.length_km - bus.current_segment_remaining_km) / road.length_km, 0.0, 1.0)
-				return origin.lerp(target, traveled_ratio) - Vector2(9, 9)
-
-	var district = graph.get_district(bus.current_district_id)
-	if district == null:
-		return Vector2.ZERO
-	return Vector2(map_canvas.size.x * district.x, map_canvas.size.y * district.y) - Vector2(9, 9)
 
 
 func _on_district_pressed(district_id: String) -> void:
@@ -1136,7 +1254,7 @@ func _on_create_order_pressed() -> void:
 	})
 	runner.state.evacuation_orders[order.id] = order
 	bus.assigned_order_id = order.id
-	_append_log("Rota criada: %s -> %s com %s." % [selected_pickup_id, selected_shelter_id, bus.id])
+	_append_log("Rota criada: %s -> %s com %s." % [_district_label(selected_pickup_id), _district_label(selected_shelter_id), _bus_label(bus.id)])
 	_refresh_ui()
 	_maybe_autosave(false)
 
@@ -1562,18 +1680,6 @@ func _current_leaderboard_entries(limit: int) -> Array:
 			limit
 		)
 	return SaveService.get_seed_leaderboard(ContentDb, String(scenario_def.id), limit)
-
-
-func _district_matches_filter(district) -> bool:
-	match map_filter_mode:
-		"high_danger":
-			return district.danger >= 55.0 or district.collapse >= 35.0
-		"shelters":
-			return district.is_shelter
-		"collapse":
-			return district.collapse >= 35.0
-		_:
-			return true
 
 
 func _describe_event_option(option: Dictionary) -> String:

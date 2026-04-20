@@ -300,3 +300,34 @@
 - Resultado:
   - a demo agora alterna entre `pt_BR` e `en_US` na UI principal e no relatorio final sem afetar o core deterministico;
   - a fase atual do repositorio avancou para `Fase 24`.
+
+## Fase 25 - Rework visual da operacao
+
+- Status: concluida nesta sessao
+- Escopo:
+  - a cena principal em `scenes/main/Main.gd` foi reorganizada para sair do layout de painel de debug e ganhar hierarquia visual real, com cabecalho de situacao, barra de comando agrupada e coluna lateral em secoes;
+  - criado `scripts/ui/OperationsMapView.gd`, um canvas dedicado para o teatro operacional, desenhando estradas, halos de risco, placas de distrito, rotas destacadas, onibus com silhueta propria e legenda embutida;
+  - o mapa deixou de depender de `Button` e `ColorRect` soltos, passando a usar hitboxes customizadas com padding interno, o que eliminou o corte do abrigo no Web e melhorou a leitura espacial;
+  - `Main.gd` passou a exibir nomes humanos em selecao, frota e ordens, com preview de rota sugerida, estados de onibus localizados e detalhe melhor do distrito focado;
+  - os botoes dinamicos de cartas e eventos tambem receberam estilo consistente com o restante da HUD.
+- Ajustes de UX entregues:
+  - filtros do mapa agora destacam em vez de simplesmente sumir com a cidade;
+  - placas de distrito ganharam reposicionamento para evitar sobreposicao nos mapas menores;
+  - o tutorial e a navegacao no Web ficaram mais legiveis em `1600x980`, com mapa central finalmente dominante na tela.
+- Arquivos principais:
+  - `scenes/main/Main.gd`
+  - `scripts/ui/OperationsMapView.gd`
+  - `data/localization/pt_BR.json`
+  - `data/localization/en_US.json`
+  - `scripts/autoload/App.gd`
+- Validacoes executadas:
+  - `godot --headless --path . --quit-after 1`
+  - `godot --headless --path . -s addons/gut/gut_cmdln.gd -- -gdir=tests/unit -gexit`
+  - `godot --headless --path . -s addons/gut/gut_cmdln.gd -- -gdir=tests/integration -gexit`
+  - `godot --headless --path . -s scripts/tools/ValidateContentCli.gd -- --root=data`
+  - `powershell -ExecutionPolicy Bypass -File tools/export_builds.ps1 -TemplateArchive .\\.godot\\downloads\\Godot_v4.6.2-stable_export_templates.tpz`
+  - validacao manual via Playwright em `http://localhost:8000/`
+- Resultado:
+  - a apresentacao da run saiu do estado de placeholder tecnico e passou a comunicar um mapa operacional de verdade;
+  - a build Web continuou carregando sem erros de console e o clique em distritos foi revalidado apos o redesign;
+  - a fase atual do repositorio avancou para `Fase 25`.

@@ -2,8 +2,8 @@
 
 ## Resumo acumulado
 
-- Fases concluídas nesta sessão: `01` até `24`.
-- Fase atual do repositório: `24`.
+- Fases concluídas nesta sessão: `01` até `25`.
+- Fase atual do repositório: `25`.
 - Estado atual do projeto:
   - campanha base, tutorial, save/load, score final, modo infinito e UI jogável estão implementados;
   - o projeto segue com `40` cartas, `35` eventos, `5` game modes, `3` mapas e `6` cenários validados;
@@ -12,6 +12,7 @@
   - o artefato final de distribuição foi gerado em `release/despachante-do-apocalipse-0.1.0-dev.zip`;
   - a runtime agora resolve `game_modes` data-driven, inclui os desafios `Combustivel Zero` e `Desafio Diario`, mostra ranking local por seed e ranking diario por data;
   - a UI principal e o relatorio final agora alternam entre `pt_BR` e `en_US` com locale persistido em `settings.json`.
+  - a apresentacao da run foi reestruturada: mapa desenhado, estradas, placas de distrito, onibus com token proprio e HUD em secoes.
 
 ## O que foi feito nesta etapa
 
@@ -46,6 +47,12 @@
   - `SettingsService.gd` passou a persistir `locale`;
   - `Main.gd` ganhou seletor de idioma e aplicacao de localizacao nos principais textos da HUD;
   - `EndRunReport.gd` passou a seguir o locale ativo nos labels e botoes.
+- Fase 25:
+  - criado `scripts/ui/OperationsMapView.gd` para desenhar o teatro operacional no lugar dos antigos botões/retângulos do mapa;
+  - `Main.gd` foi reorganizado em superfícies visuais com hierarquia mais clara, header de situação, barra de comando agrupada e lateral seccionada;
+  - selecao, frota e ordens passaram a mostrar nomes legíveis, preview de rota e estados de ônibus localizados;
+  - o layout do mapa ganhou padding e reposicionamento adaptativo das placas, corrigindo o recorte do abrigo e a sobreposição mais gritante do tutorial;
+  - a build web foi reexportada e validada de novo em Playwright após o redesign.
 
 ## O que foi testado
 
@@ -60,6 +67,9 @@
 - Smoke:
   - `godot --headless --path . --quit-after 1`
   - resultado final: cena principal continua carregando sem erro de script
+- QA visual web:
+  - `http://localhost:8000/` validado com Playwright após o reexport
+  - resultado: carregamento ok, sem erros de console, mapa redesenhado renderizando corretamente e clique em distrito revalidado
 - QA automatizada:
   - `campanha_tutorial_primeiras_rotas`: `Tempo 8 | Salvos 62 | Fim tutorial_complete | Tutorial QA 8/8`
   - `campanha_01_cidade_cinza`: `Tempo 287 | Nota B | Fim command_center_lost`
@@ -86,6 +96,7 @@
 - Risco residual conhecido:
   - o Godot continua emitindo o aviso não fatal sobre `root certificate store` do Windows neste ambiente, mas isso nao impediu testes, export nem empacotamento.
   - a localizacao atual cobre a HUD principal e o relatorio final; logs da simulacao e o conteudo narrativo data-driven continuam majoritariamente em PT-BR.
+  - a validacao manual Playwright desta etapa confirmou o clique em distrito apos o redesign, mas nao refez um walkthrough completo ate o relatorio final na interface nova.
 
 ## Observações
 
