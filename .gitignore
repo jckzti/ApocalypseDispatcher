@@ -1,0 +1,12 @@
+.godot/
+.import/
+.mono/
+build/
+dist/
+tmp/
+temp/
+cache/
+logs/
+*.tmp
+*.log
+
