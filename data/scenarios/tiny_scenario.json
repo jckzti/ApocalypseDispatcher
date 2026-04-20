@@ -1,0 +1,32 @@
+{
+  "id": "campanha_tiny_map",
+  "name": "Tiny Map",
+  "game_mode_id": "campaign_standard",
+  "map_id": "tiny_map",
+  "starting_seed_mode": "fixed",
+  "starting_resources": {
+    "budget": 8,
+    "fuel": 900,
+    "order": 50,
+    "trust": 50,
+    "communication": 5,
+    "intelligence": 2,
+    "medical_supplies": 12,
+    "parts": 6,
+    "authority": 0
+  },
+  "starting_buses": [
+    { "id": "bus_01", "capacity": 60, "fuel_max": 180, "speed_kmh": 38, "tags": [] }
+  ],
+  "starting_cards": ["card_public_map"],
+  "allowed_card_classes": ["logistics", "communications", "security", "medical", "civic", "engineering", "black_market", "anomaly"],
+  "allowed_event_ids": ["event_supply_drop"],
+  "objectives": [
+    { "type": "save_population_percent", "value": 0.25, "label": "Salvar 25% da populacao" }
+  ],
+  "end_conditions": {
+    "max_minutes": 360,
+    "command_center_lost": true,
+    "all_shelters_lost": true
+  }
+}

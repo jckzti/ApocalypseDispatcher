@@ -1,0 +1,95 @@
+{
+  "id": "desafio_diario",
+  "name": "Desafio Diario",
+  "game_mode_id": "daily_ops",
+  "map_id": "cidade_cinza",
+  "starting_seed_mode": "daily",
+  "starting_resources": {
+    "budget": 12,
+    "fuel": 820,
+    "order": 52,
+    "trust": 50,
+    "communication": 5,
+    "intelligence": 3,
+    "medical_supplies": 10,
+    "parts": 6,
+    "authority": 1
+  },
+  "starting_buses": [
+    { "id": "bus_daily_01", "name": "Linha Calendario", "capacity": 60, "fuel_max": 200, "speed_kmh": 36, "tags": ["daily"] },
+    { "id": "bus_daily_02", "name": "Linha Virada", "capacity": 54, "fuel_max": 180, "speed_kmh": 40, "tags": ["daily", "fast"] }
+  ],
+  "starting_cards": ["card_public_map"],
+  "allowed_card_classes": ["logistics", "engineering", "communications", "medical", "civic", "black_market"],
+  "allowed_event_ids": [
+    "event_supply_drop",
+    "event_cinza_bridge_rumor",
+    "event_driver_union",
+    "event_blackout",
+    "event_flooded_underpass",
+    "event_radio_silence",
+    "event_panic_stampede",
+    "event_command_center_threatened"
+  ],
+  "objectives": [
+    { "type": "daily_survival", "value": 1, "label": "Adaptar a operacao ao mutador do dia e fechar um score forte" }
+  ],
+  "end_conditions": {
+    "max_minutes": 420,
+    "command_center_lost": true,
+    "all_shelters_lost": true
+  },
+  "metadata": {
+    "daily_source_pool": [
+      "campanha_01_cidade_cinza",
+      "desafio_combustivel_zero",
+      "campanha_tiny_map"
+    ],
+    "daily_modifiers_per_run": 2,
+    "card_offer_minutes": [8, 22, 44],
+    "card_offer_repeat_interval_minutes": 18,
+    "autosave_interval_minutes": 8,
+    "daily_modifier_pool": [
+      {
+        "id": "lean_budget",
+        "label": "Caixa Curto",
+        "starting_resources_delta": { "budget": -6, "trust": -4 }
+      },
+      {
+        "id": "emergency_fuel",
+        "label": "Tanques Emergenciais",
+        "starting_resources_delta": { "fuel": 180, "parts": -2 }
+      },
+      {
+        "id": "radio_window",
+        "label": "Janela de Radio",
+        "starting_resources_delta": { "communication": 3, "intelligence": 2 },
+        "starting_cards_add": ["card_radio_boosters"],
+        "allowed_card_ids_add": ["card_radio_boosters", "card_radio_ham_network"]
+      },
+      {
+        "id": "medic_push",
+        "label": "Corredor de Triage",
+        "starting_resources_delta": { "medical_supplies": 8, "order": -3 },
+        "starting_cards_add": ["card_triage_teams"],
+        "allowed_card_ids_add": ["card_triage_teams", "card_mobile_clinic"]
+      },
+      {
+        "id": "black_market_rush",
+        "label": "Mercado Cinzento",
+        "starting_resources_delta": { "budget": 5, "trust": -6, "fuel": 70 },
+        "starting_cards_add": ["card_black_diesel"],
+        "allowed_card_ids_add": ["card_black_diesel"]
+      },
+      {
+        "id": "compressed_window",
+        "label": "Janela Curta",
+        "end_conditions_overrides": { "max_minutes": 300 },
+        "metadata_overrides": {
+          "card_offer_minutes": [6, 14, 28],
+          "card_offer_repeat_interval_minutes": 14
+        }
+      }
+    ]
+  }
+}

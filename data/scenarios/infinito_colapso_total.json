@@ -1,0 +1,83 @@
+{
+  "id": "infinito_colapso_total",
+  "name": "Infinito - Colapso Total",
+  "game_mode_id": "infinite_waves",
+  "map_id": "cidade_cinza",
+  "starting_seed_mode": "fixed",
+  "starting_resources": {
+    "budget": 16,
+    "fuel": 1150,
+    "order": 58,
+    "trust": 54,
+    "communication": 6,
+    "intelligence": 4,
+    "medical_supplies": 14,
+    "parts": 9,
+    "authority": 2
+  },
+  "starting_buses": [
+    { "id": "bus_inf_01", "name": "Linha Chumbo", "capacity": 64, "fuel_max": 220, "speed_kmh": 36, "tags": ["standard"] },
+    { "id": "bus_inf_02", "name": "Linha Fumaça", "capacity": 52, "fuel_max": 180, "speed_kmh": 40, "tags": ["fast"] },
+    { "id": "bus_inf_03", "name": "Linha Escudo", "capacity": 72, "fuel_max": 210, "speed_kmh": 32, "tags": ["heavy"] },
+    { "id": "bus_inf_04", "name": "Linha Brasa", "capacity": 58, "fuel_max": 190, "speed_kmh": 37, "tags": ["standard"] },
+    { "id": "bus_inf_05", "name": "Linha Risco", "capacity": 50, "fuel_max": 170, "speed_kmh": 41, "tags": ["fast"] },
+    { "id": "bus_inf_06", "name": "Linha Cinza", "capacity": 66, "fuel_max": 200, "speed_kmh": 35, "tags": ["standard"] },
+    { "id": "bus_inf_07", "name": "Linha Guarda", "capacity": 70, "fuel_max": 205, "speed_kmh": 33, "tags": ["heavy"] },
+    { "id": "bus_inf_08", "name": "Linha Eco", "capacity": 56, "fuel_max": 185, "speed_kmh": 39, "tags": ["fast"] }
+  ],
+  "starting_cards": ["card_public_map", "card_fuel_rationing", "card_dispatch_training"],
+  "allowed_card_classes": ["logistics", "engineering", "communications", "security", "medical", "civic", "black_market", "anomaly"],
+  "allowed_event_ids": [
+    "event_supply_drop",
+    "event_cinza_generator",
+    "event_cinza_bridge_rumor",
+    "event_cinza_diesel_auction",
+    "event_cinza_rooftop_volunteers",
+    "event_fake_news_last_bus",
+    "event_fuel_depot_looted",
+    "event_bridge_crack",
+    "event_hospital_plea",
+    "event_driver_union",
+    "event_influencer_leaks_route",
+    "event_blackout",
+    "event_school_shelter_overflow",
+    "event_illegal_checkpoint",
+    "event_bus_missing",
+    "event_children_at_terminal",
+    "event_fire_jumps_river",
+    "event_flooded_underpass",
+    "event_volunteers_arrive",
+    "event_panic_stampede",
+    "event_radio_silence",
+    "event_mayor_calls",
+    "event_militia_offer",
+    "event_refinery_blast",
+    "event_false_safe_zone",
+    "event_shelter_infection",
+    "event_elderly_home",
+    "event_rain_of_ash",
+    "event_anomaly_red_signal",
+    "event_population_refuses",
+    "event_command_center_threatened"
+  ],
+  "objectives": [
+    { "type": "score_waves", "value": 1, "label": "Transformar duplicatas em build e score de sobrevivencia" }
+  ],
+  "end_conditions": {
+    "command_center_lost": true,
+    "all_shelters_lost": true
+  },
+  "metadata": {
+    "infinite_mode": true,
+    "wave_interval_minutes": 12,
+    "population_spawn_base": 280,
+    "population_spawn_growth": 75,
+    "districts_per_wave": 3,
+    "danger_per_wave": 5.5,
+    "panic_per_wave": 3.4,
+    "collapse_per_wave": 2.2,
+    "card_offer_minutes": [8, 18],
+    "card_offer_repeat_interval_minutes": 18,
+    "autosave_interval_minutes": 10
+  }
+}

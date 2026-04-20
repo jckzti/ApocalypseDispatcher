@@ -1,0 +1,30 @@
+[
+  {
+    "id": "dup_card",
+    "name": "Duplicada A",
+    "class": "logistics",
+    "rarity": "common",
+    "tags": [],
+    "min_crisis_level": 0,
+    "max_level": 1,
+    "description": "Primeira carta.",
+    "effects_by_level": [{ "fuel": 1 }],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": ""
+  },
+  {
+    "id": "dup_card",
+    "name": "Duplicada B",
+    "class": "logistics",
+    "rarity": "common",
+    "tags": [],
+    "min_crisis_level": 0,
+    "max_level": 1,
+    "description": "Segunda carta.",
+    "effects_by_level": [{ "fuel": 2 }],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": ""
+  }
+]

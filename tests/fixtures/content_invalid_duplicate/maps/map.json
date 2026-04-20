@@ -1,0 +1,40 @@
+{
+  "id": "dup_map",
+  "name": "Mapa Duplicado",
+  "description": "Mapa minimo.",
+  "districts": [
+    {
+      "id": "a",
+      "name": "A",
+      "x": 0.0,
+      "y": 0.0,
+      "tags": [],
+      "population": { "adults": 1, "children": 0, "elderly": 0, "patients": 0, "essential_staff": 0, "volunteer_drivers": 0, "high_influence": 0 },
+      "panic": 0,
+      "trust": 50,
+      "danger": 0,
+      "collapse": 0,
+      "boarding_base_per_minute": 1,
+      "is_shelter": false,
+      "shelter_capacity": 0
+    },
+    {
+      "id": "b",
+      "name": "B",
+      "x": 1.0,
+      "y": 1.0,
+      "tags": ["shelter"],
+      "population": { "adults": 0, "children": 0, "elderly": 0, "patients": 0, "essential_staff": 0, "volunteer_drivers": 0, "high_influence": 0 },
+      "panic": 0,
+      "trust": 50,
+      "danger": 0,
+      "collapse": 0,
+      "boarding_base_per_minute": 1,
+      "is_shelter": true,
+      "shelter_capacity": 10
+    }
+  ],
+  "roads": [
+    { "id": "road_ab", "from": "a", "to": "b", "length_km": 1.0, "traffic": 0, "blockade": 0, "danger": 0, "quality": 100, "tags": [] }
+  ]
+}

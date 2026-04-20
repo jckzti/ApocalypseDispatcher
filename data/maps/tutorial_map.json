@@ -1,0 +1,156 @@
+{
+  "id": "tutorial_map",
+  "name": "Primeiras Rotas",
+  "description": "Mapa compacto para ensinar o ciclo basico de despacho, embarque e abrigo.",
+  "districts": [
+    {
+      "id": "garagem_central",
+      "name": "Garagem Central",
+      "x": 0.18,
+      "y": 0.52,
+      "tags": ["terminal", "command_center"],
+      "population": {
+        "adults": 45,
+        "children": 0,
+        "elderly": 0,
+        "patients": 0,
+        "essential_staff": 18,
+        "volunteer_drivers": 10,
+        "high_influence": 1
+      },
+      "panic": 4,
+      "trust": 68,
+      "danger": 3,
+      "collapse": 0,
+      "boarding_base_per_minute": 48,
+      "is_shelter": false,
+      "shelter_capacity": 0
+    },
+    {
+      "id": "bairro_vista",
+      "name": "Bairro Vista",
+      "x": 0.44,
+      "y": 0.27,
+      "tags": ["residential"],
+      "population": {
+        "adults": 280,
+        "children": 96,
+        "elderly": 60,
+        "patients": 12,
+        "essential_staff": 14,
+        "volunteer_drivers": 2,
+        "high_influence": 3
+      },
+      "panic": 10,
+      "trust": 54,
+      "danger": 5,
+      "collapse": 0,
+      "boarding_base_per_minute": 42,
+      "is_shelter": false,
+      "shelter_capacity": 0
+    },
+    {
+      "id": "clinica_leste",
+      "name": "Clinica Leste",
+      "x": 0.73,
+      "y": 0.43,
+      "tags": ["medical"],
+      "population": {
+        "adults": 110,
+        "children": 18,
+        "elderly": 44,
+        "patients": 35,
+        "essential_staff": 24,
+        "volunteer_drivers": 0,
+        "high_influence": 2
+      },
+      "panic": 14,
+      "trust": 58,
+      "danger": 7,
+      "collapse": 0,
+      "boarding_base_per_minute": 24,
+      "is_shelter": false,
+      "shelter_capacity": 0
+    },
+    {
+      "id": "ginasio_seguro",
+      "name": "Ginasio Seguro",
+      "x": 0.49,
+      "y": 0.76,
+      "tags": ["shelter", "community"],
+      "population": {
+        "adults": 0,
+        "children": 0,
+        "elderly": 0,
+        "patients": 0,
+        "essential_staff": 10,
+        "volunteer_drivers": 3,
+        "high_influence": 0
+      },
+      "panic": 2,
+      "trust": 72,
+      "danger": 2,
+      "collapse": 0,
+      "boarding_base_per_minute": 60,
+      "is_shelter": true,
+      "shelter_capacity": 950
+    }
+  ],
+  "roads": [
+    {
+      "id": "road_garagem_bairro",
+      "from": "garagem_central",
+      "to": "bairro_vista",
+      "length_km": 0.8,
+      "traffic": 10,
+      "blockade": 0,
+      "danger": 3,
+      "quality": 88,
+      "tags": ["avenue"]
+    },
+    {
+      "id": "road_garagem_ginasio",
+      "from": "garagem_central",
+      "to": "ginasio_seguro",
+      "length_km": 1.4,
+      "traffic": 8,
+      "blockade": 0,
+      "danger": 2,
+      "quality": 90,
+      "tags": ["avenue"]
+    },
+    {
+      "id": "road_bairro_ginasio",
+      "from": "bairro_vista",
+      "to": "ginasio_seguro",
+      "length_km": 1.6,
+      "traffic": 18,
+      "blockade": 0,
+      "danger": 4,
+      "quality": 84,
+      "tags": ["avenue"]
+    },
+    {
+      "id": "road_bairro_clinica",
+      "from": "bairro_vista",
+      "to": "clinica_leste",
+      "length_km": 1.2,
+      "traffic": 15,
+      "blockade": 0,
+      "danger": 5,
+      "quality": 82,
+      "tags": ["street"]
+    },
+    {
+      "id": "road_clinica_ginasio",
+      "from": "clinica_leste",
+      "to": "ginasio_seguro",
+      "length_km": 1.8,
+      "traffic": 12,
+      "blockade": 0,
+      "danger": 4,
+      "quality": 86,
+      "tags": ["avenue"]
+    }
+  ]
+}

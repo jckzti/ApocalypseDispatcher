@@ -1,0 +1,110 @@
+[
+  {
+    "id": "campaign_standard",
+    "name": "Campanha Padrao",
+    "description": "Runs regulares de campanha, com foco em evacuar o maximo possivel antes do colapso estrutural.",
+    "scenario_pool": ["campanha_tiny_map", "campanha_01_cidade_cinza"],
+    "allowed_cards": [],
+    "allowed_card_classes": [],
+    "tags": ["campaign", "standard"],
+    "ruleset_modifiers": {
+      "mode_label": "Campanha"
+    },
+    "objective_set": [],
+    "end_condition_set": {},
+    "reward_curve": {}
+  },
+  {
+    "id": "tutorial_guided",
+    "name": "Tutorial Guiado",
+    "description": "Onboarding curto com objetivos claros, eventos roteirizados e janela de cartas antecipada.",
+    "scenario_pool": ["campanha_tutorial_primeiras_rotas"],
+    "allowed_cards": [],
+    "allowed_card_classes": [],
+    "tags": ["tutorial", "guided"],
+    "ruleset_modifiers": {
+      "mode_label": "Tutorial",
+      "guided_mode": true
+    },
+    "objective_set": [],
+    "end_condition_set": {},
+    "reward_curve": {}
+  },
+  {
+    "id": "infinite_waves",
+    "name": "Modo Infinito",
+    "description": "A cidade segue escalando em ondas ate o jogador decidir extrair o relatorio.",
+    "scenario_pool": ["infinito_colapso_total"],
+    "allowed_cards": [],
+    "allowed_card_classes": [],
+    "tags": ["infinite", "endless"],
+    "ruleset_modifiers": {
+      "mode_label": "Infinito",
+      "infinite_mode": true
+    },
+    "objective_set": [
+      { "type": "survive_waves", "value": 1, "label": "Aguentar o maximo de ondas e extrair no momento certo" }
+    ],
+    "end_condition_set": {},
+    "reward_curve": {}
+  },
+  {
+    "id": "challenge_zero_fuel",
+    "name": "Desafio - Combustivel Zero",
+    "description": "Frota remendada, janela curta de operacao e um deck bem mais enxuto focado em eficiencia.",
+    "scenario_pool": ["desafio_combustivel_zero"],
+    "allowed_cards": [
+      "card_public_map",
+      "card_fuel_rationing",
+      "card_dispatch_training",
+      "card_radio_boosters",
+      "card_black_diesel",
+      "card_extra_driver_shift",
+      "card_auxiliary_tanks",
+      "card_express_boarding",
+      "card_night_routes",
+      "card_dispatch_algorithm",
+      "card_bridge_bailey",
+      "card_road_crews",
+      "card_cinza_bridge_clearance"
+    ],
+    "allowed_card_classes": ["logistics", "engineering", "communications", "black_market"],
+    "tags": ["challenge", "fuel", "limited_deck"],
+    "ruleset_modifiers": {
+      "mode_label": "Desafio",
+      "challenge_mode": true,
+      "card_offer_minutes": [6, 14, 28, 44],
+      "autosave_interval_minutes": 8
+    },
+    "objective_set": [
+      { "type": "limited_fleet", "value": 1, "label": "Operar com frota parcial e sem margem para desperdiço" }
+    ],
+    "end_condition_set": {
+      "max_minutes": 360,
+      "command_center_lost": true,
+      "all_shelters_lost": true
+    },
+    "reward_curve": {
+      "offer_interval_minutes": 14
+    }
+  },
+  {
+    "id": "daily_ops",
+    "name": "Desafio Diario",
+    "description": "Seed fixa por data com rotacao automatica de mutadores e variacao leve entre cenarios operacionais.",
+    "scenario_pool": ["desafio_diario"],
+    "allowed_cards": [],
+    "allowed_card_classes": [],
+    "tags": ["daily", "challenge", "seeded"],
+    "ruleset_modifiers": {
+      "mode_label": "Desafio Diario",
+      "daily_mode": true,
+      "autosave_interval_minutes": 8
+    },
+    "objective_set": [
+      { "type": "daily_score_push", "value": 1, "label": "Registrar o melhor score local desta data" }
+    ],
+    "end_condition_set": {},
+    "reward_curve": {}
+  }
+]

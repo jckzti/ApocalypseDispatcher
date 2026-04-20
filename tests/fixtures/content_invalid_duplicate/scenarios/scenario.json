@@ -1,0 +1,14 @@
+{
+  "id": "dup_scenario",
+  "name": "Scenario",
+  "game_mode_id": "fixture_mode",
+  "map_id": "dup_map",
+  "starting_seed_mode": "fixed",
+  "starting_resources": { "budget": 1, "fuel": 1, "order": 1, "trust": 1, "communication": 1, "intelligence": 1, "medical_supplies": 1, "parts": 1, "authority": 0 },
+  "starting_buses": [{ "id": "bus_01", "capacity": 10, "fuel_max": 10, "speed_kmh": 10, "tags": [] }],
+  "starting_cards": ["dup_card"],
+  "allowed_card_classes": ["logistics"],
+  "allowed_event_ids": ["event_ok"],
+  "objectives": [],
+  "end_conditions": { "max_minutes": 10 }
+}

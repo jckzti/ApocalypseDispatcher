@@ -1,0 +1,27 @@
+[
+  {
+    "id": "event_supply_drop",
+    "title": "Comboio de Suprimentos",
+    "body": "Uma base militar oferece uma janela curta para reabastecimento.",
+    "category": "route",
+    "tags": ["fuel", "aid"],
+    "min_crisis_level": 0,
+    "weight": 10,
+    "cooldown_minutes": 30,
+    "trigger": { "min_elapsed_minutes": 10 },
+    "options": [
+      {
+        "id": "accept",
+        "label": "Aceitar o comboio",
+        "requirements": {},
+        "effects": { "fuel_add": 120, "trust_add": 2 }
+      },
+      {
+        "id": "decline",
+        "label": "Manter a rota atual",
+        "requirements": {},
+        "effects": { "order_add": 1 }
+      }
+    ]
+  }
+]

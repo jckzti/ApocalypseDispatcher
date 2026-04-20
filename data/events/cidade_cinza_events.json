@@ -1,0 +1,102 @@
+[
+  {
+    "id": "event_cinza_generator",
+    "title": "Gerador do Hospital Velho",
+    "body": "O gerador do hospital esta falhando e a equipe pede um reforco imediato. A decisao afeta o folego medico da run.",
+    "category": "moral",
+    "tags": ["city_cinza", "medical"],
+    "min_crisis_level": 0,
+    "weight": 14,
+    "cooldown_minutes": 90,
+    "trigger": { "min_elapsed_minutes": 18 },
+    "options": [
+      {
+        "id": "send_parts",
+        "label": "Mandar pecas e equipe tecnica",
+        "requirements": { "parts": 2 },
+        "effects": { "parts_add": -2, "medical_supplies_add": 2, "trust_add": 1 }
+      },
+      {
+        "id": "hold_stock",
+        "label": "Guardar estoque para a frota",
+        "requirements": {},
+        "effects": { "authority_add": 1, "trust_add": -2 }
+      }
+    ]
+  },
+  {
+    "id": "event_cinza_bridge_rumor",
+    "title": "Boato no Viaduto",
+    "body": "Uma onda de boatos diz que o viaduto principal vai cair a qualquer minuto. O pânico ameaça travar dois corredores de fuga.",
+    "category": "social",
+    "tags": ["city_cinza", "bridge", "panic"],
+    "min_crisis_level": 1,
+    "weight": 16,
+    "cooldown_minutes": 80,
+    "trigger": { "min_elapsed_minutes": 28 },
+    "options": [
+      {
+        "id": "broadcast_denial",
+        "label": "Desmentir pelo radio",
+        "requirements": {},
+        "effects": { "communication_add": -1, "trust_add": 2, "panic_add": -3 }
+      },
+      {
+        "id": "open_detour",
+        "label": "Abrir desvio preventivo",
+        "requirements": {},
+        "effects": { "order_add": 2, "panic_add": -1 }
+      }
+    ]
+  },
+  {
+    "id": "event_cinza_diesel_auction",
+    "title": "Leilao nas Docas",
+    "body": "As docas liberaram um lote curto de diesel. O preço sobe a cada minuto e a decisao mexe com caixa e confiança.",
+    "category": "route",
+    "tags": ["city_cinza", "fuel", "port"],
+    "min_crisis_level": 1,
+    "weight": 12,
+    "cooldown_minutes": 100,
+    "trigger": { "min_elapsed_minutes": 40 },
+    "options": [
+      {
+        "id": "buy_now",
+        "label": "Comprar o lote",
+        "requirements": { "budget": 2 },
+        "effects": { "budget_add": -2, "fuel_add": 140 }
+      },
+      {
+        "id": "let_it_pass",
+        "label": "Recusar o leilao",
+        "requirements": {},
+        "effects": { "trust_add": 1, "authority_add": 1 }
+      }
+    ]
+  },
+  {
+    "id": "event_cinza_rooftop_volunteers",
+    "title": "Voluntarios no Telhado",
+    "body": "Um grupo de voluntarios oferece vigia de telhado e orientacao visual para as filas. Eles pedem uma linha clara de comando.",
+    "category": "social",
+    "tags": ["city_cinza", "volunteer", "radio"],
+    "min_crisis_level": 0,
+    "weight": 18,
+    "cooldown_minutes": 70,
+    "trigger": { "min_elapsed_minutes": 12 },
+    "options": [
+      {
+        "id": "assign_channel",
+        "label": "Integrar os voluntarios ao radio",
+        "requirements": {},
+        "effects": { "communication_add": 1, "order_add": 1, "trust_add": 1 }
+      },
+      {
+        "id": "keep_chain_strict",
+        "label": "Manter cadeia de comando fechada",
+        "requirements": {},
+        "effects": { "authority_add": 1, "trust_add": -1 }
+      }
+    ]
+  }
+]

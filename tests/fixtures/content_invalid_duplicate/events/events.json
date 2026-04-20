@@ -1,0 +1,14 @@
+[
+  {
+    "id": "event_ok",
+    "title": "Evento OK",
+    "body": "Corpo",
+    "category": "social",
+    "tags": [],
+    "min_crisis_level": 0,
+    "weight": 5,
+    "cooldown_minutes": 10,
+    "trigger": {},
+    "options": [{ "id": "accept", "label": "Aceitar", "requirements": {}, "effects": {} }]
+  }
+]

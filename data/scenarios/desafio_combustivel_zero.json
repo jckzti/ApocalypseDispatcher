@@ -1,0 +1,50 @@
+{
+  "id": "desafio_combustivel_zero",
+  "name": "Desafio - Combustivel Zero",
+  "game_mode_id": "challenge_zero_fuel",
+  "map_id": "cidade_cinza",
+  "starting_seed_mode": "fixed",
+  "starting_resources": {
+    "budget": 9,
+    "fuel": 40,
+    "order": 46,
+    "trust": 48,
+    "communication": 4,
+    "intelligence": 2,
+    "medical_supplies": 9,
+    "parts": 4,
+    "authority": 0
+  },
+  "starting_buses": [
+    { "id": "bus_zf_01", "name": "Linha Seca", "capacity": 56, "fuel_max": 170, "fuel_current": 92, "speed_kmh": 38, "tags": ["fast", "challenge"] },
+    { "id": "bus_zf_02", "name": "Linha Remendo", "capacity": 68, "fuel_max": 185, "fuel_current": 106, "speed_kmh": 33, "tags": ["heavy", "challenge"] },
+    { "id": "bus_zf_03", "name": "Linha Fio", "capacity": 48, "fuel_max": 155, "fuel_current": 84, "speed_kmh": 41, "tags": ["fast", "challenge"] },
+    { "id": "bus_zf_04", "name": "Linha Ferrugem", "capacity": 62, "fuel_max": 175, "fuel_current": 98, "speed_kmh": 35, "tags": ["standard", "challenge"] }
+  ],
+  "starting_cards": ["card_public_map", "card_fuel_rationing"],
+  "allowed_card_classes": ["logistics", "engineering", "communications", "black_market"],
+  "allowed_event_ids": [
+    "event_supply_drop",
+    "event_cinza_bridge_rumor",
+    "event_cinza_diesel_auction",
+    "event_fuel_depot_looted",
+    "event_bridge_crack",
+    "event_driver_union",
+    "event_blackout",
+    "event_illegal_checkpoint",
+    "event_bus_missing",
+    "event_flooded_underpass",
+    "event_volunteers_arrive",
+    "event_radio_silence",
+    "event_panic_stampede",
+    "event_command_center_threatened"
+  ],
+  "objectives": [
+    { "type": "save_population", "value": 1100, "label": "Salvar pelo menos 1.100 pessoas antes de a frota secar" },
+    { "type": "preserve_fleet", "value": 2, "label": "Tentar terminar com pelo menos dois onibus ainda operacionais" }
+  ],
+  "end_conditions": {},
+  "metadata": {
+    "card_offer_repeat_interval_minutes": 14
+  }
+}

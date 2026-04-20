@@ -1,0 +1,13 @@
+{
+  "id": "fixture_mode",
+  "name": "Fixture Mode",
+  "description": "Modo base para fixture.",
+  "scenario_pool": ["scenario_ok"],
+  "allowed_cards": [],
+  "allowed_card_classes": [],
+  "tags": ["fixture"],
+  "ruleset_modifiers": {},
+  "objective_set": [],
+  "end_condition_set": {},
+  "reward_curve": {}
+}

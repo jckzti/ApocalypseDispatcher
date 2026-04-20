@@ -1,0 +1,16 @@
+[
+  {
+    "id": "card_ok",
+    "name": "Carta OK",
+    "class": "communications",
+    "rarity": "common",
+    "tags": [],
+    "min_crisis_level": 0,
+    "max_level": 1,
+    "description": "Carta valida.",
+    "effects_by_level": [{ "communication_flat": 1 }],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": ""
+  }
+]

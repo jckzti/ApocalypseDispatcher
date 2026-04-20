@@ -1,0 +1,76 @@
+{
+  "id": "campanha_01_cidade_cinza",
+  "name": "Campanha 01 - Cidade Cinza",
+  "game_mode_id": "campaign_standard",
+  "map_id": "cidade_cinza",
+  "starting_seed_mode": "fixed",
+  "starting_resources": {
+    "budget": 13,
+    "fuel": 980,
+    "order": 55,
+    "trust": 52,
+    "communication": 5,
+    "intelligence": 3,
+    "medical_supplies": 12,
+    "parts": 7,
+    "authority": 1
+  },
+  "starting_buses": [
+    { "id": "bus_01", "name": "Linha Chumbo", "capacity": 64, "fuel_max": 220, "speed_kmh": 36, "tags": ["standard"] },
+    { "id": "bus_02", "name": "Linha Fumaça", "capacity": 52, "fuel_max": 180, "speed_kmh": 40, "tags": ["fast"] },
+    { "id": "bus_03", "name": "Linha Escudo", "capacity": 72, "fuel_max": 210, "speed_kmh": 32, "tags": ["heavy"] },
+    { "id": "bus_04", "name": "Linha Brasa", "capacity": 58, "fuel_max": 190, "speed_kmh": 37, "tags": ["standard"] },
+    { "id": "bus_05", "name": "Linha Risco", "capacity": 50, "fuel_max": 170, "speed_kmh": 41, "tags": ["fast"] },
+    { "id": "bus_06", "name": "Linha Cinza", "capacity": 66, "fuel_max": 200, "speed_kmh": 35, "tags": ["standard"] },
+    { "id": "bus_07", "name": "Linha Guarda", "capacity": 70, "fuel_max": 205, "speed_kmh": 33, "tags": ["heavy"] },
+    { "id": "bus_08", "name": "Linha Eco", "capacity": 56, "fuel_max": 185, "speed_kmh": 39, "tags": ["fast"] }
+  ],
+  "starting_cards": ["card_public_map", "card_fuel_rationing"],
+  "allowed_card_classes": ["logistics", "engineering", "communications", "security", "medical", "civic", "black_market", "anomaly"],
+  "allowed_event_ids": [
+    "event_supply_drop",
+    "event_cinza_generator",
+    "event_cinza_bridge_rumor",
+    "event_cinza_diesel_auction",
+    "event_cinza_rooftop_volunteers",
+    "event_fake_news_last_bus",
+    "event_fuel_depot_looted",
+    "event_bridge_crack",
+    "event_hospital_plea",
+    "event_driver_union",
+    "event_influencer_leaks_route",
+    "event_blackout",
+    "event_school_shelter_overflow",
+    "event_illegal_checkpoint",
+    "event_bus_missing",
+    "event_children_at_terminal",
+    "event_fire_jumps_river",
+    "event_flooded_underpass",
+    "event_volunteers_arrive",
+    "event_panic_stampede",
+    "event_radio_silence",
+    "event_mayor_calls",
+    "event_militia_offer",
+    "event_refinery_blast",
+    "event_false_safe_zone",
+    "event_shelter_infection",
+    "event_elderly_home",
+    "event_rain_of_ash",
+    "event_anomaly_red_signal",
+    "event_population_refuses",
+    "event_command_center_threatened"
+  ],
+  "objectives": [
+    { "type": "save_population_percent", "value": 0.35, "label": "Salvar 35% da populacao da cidade" },
+    { "type": "keep_command_center", "value": 1, "label": "Manter o Comando Central operacional" }
+  ],
+  "end_conditions": {
+    "max_minutes": 540,
+    "command_center_lost": true,
+    "all_shelters_lost": true
+  },
+  "metadata": {
+    "card_offer_minutes": [10, 25, 45, 70, 105, 150],
+    "autosave_interval_minutes": 10
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "id": "campanha_tutorial_primeiras_rotas",
+  "name": "Tutorial - Primeiras Rotas",
+  "game_mode_id": "tutorial_guided",
+  "map_id": "tutorial_map",
+  "starting_seed_mode": "fixed",
+  "starting_resources": {
+    "budget": 6,
+    "fuel": 240,
+    "order": 60,
+    "trust": 58,
+    "communication": 4,
+    "intelligence": 1,
+    "medical_supplies": 6,
+    "parts": 3,
+    "authority": 0
+  },
+  "starting_buses": [
+    { "id": "bus_tutorial_01", "name": "Linha Escola", "capacity": 70, "fuel_max": 140, "speed_kmh": 34, "tags": ["tutorial"] }
+  ],
+  "starting_cards": ["card_public_map"],
+  "allowed_card_classes": ["communications", "logistics", "civic", "medical"],
+  "allowed_event_ids": [
+    "event_tutorial_radio_call",
+    "event_tutorial_triage_lane",
+    "event_tutorial_diesel_tip",
+    "event_tutorial_queue_wave"
+  ],
+  "objectives": [
+    { "type": "save_population", "value": 60, "label": "Salvar 60 pessoas" },
+    { "type": "resolve_events", "value": 1, "label": "Resolver pelo menos 1 evento" }
+  ],
+  "end_conditions": {
+    "max_minutes": 15,
+    "saved_population_at_least": 60,
+    "command_center_lost": true,
+    "all_shelters_lost": true
+  },
+  "tutorial_steps": [
+    {
+      "id": "select_origin",
+      "title": "Escolha uma origem",
+      "body": "Clique em Bairro Vista ou Clinica Leste para marcar quem sera evacuado primeiro.",
+      "condition": { "type": "selected_pickup" }
+    },
+    {
+      "id": "select_shelter",
+      "title": "Escolha um abrigo",
+      "body": "Clique em Ginasio Seguro para definir o destino da rota.",
+      "condition": { "type": "selected_shelter" }
+    },
+    {
+      "id": "create_route",
+      "title": "Despache o onibus",
+      "body": "Use Criar Rota para enviar o onibus ate o distrito selecionado.",
+      "condition": { "type": "order_count_at_least", "value": 1 }
+    },
+    {
+      "id": "advance_time",
+      "title": "Coloque a cidade em movimento",
+      "body": "Inicie a simulacao ou avance alguns minutos para ver a rota funcionar.",
+      "condition": { "type": "elapsed_minutes_at_least", "value": 2 }
+    },
+    {
+      "id": "choose_card",
+      "title": "Adote uma medida",
+      "body": "Quando a oferta aparecer, escolha uma carta para reforcar a operacao.",
+      "condition": { "type": "owned_card_count_at_least", "value": 2 }
+    },
+    {
+      "id": "resolve_event",
+      "title": "Responda ao radio",
+      "body": "Resolva o primeiro evento para treinar uma decisao rapida.",
+      "condition": { "type": "event_history_count_at_least", "value": 1 }
+    },
+    {
+      "id": "save_run",
+      "title": "Registre o progresso",
+      "body": "Use Salvar para gravar a run atual e testar o sistema de persistencia.",
+      "condition": { "type": "manual_save_exists" }
+    },
+    {
+      "id": "save_people",
+      "title": "Feche a operacao",
+      "body": "Salve pelo menos 60 pessoas antes do relatorio final.",
+      "condition": { "type": "saved_population_at_least", "value": 60 }
+    }
+  ],
+  "metadata": {
+    "card_offer_minutes": [1, 4],
+    "autosave_interval_minutes": 5,
+    "unlock_scenarios_on_complete": ["campanha_tiny_map", "campanha_01_cidade_cinza"]
+  }
+}

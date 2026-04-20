@@ -1,0 +1,111 @@
+{
+  "id": "tiny_map",
+  "name": "Mapa de Teste",
+  "description": "Mapa pequeno para validar conteudo e as primeiras simulacoes.",
+  "districts": [
+    {
+      "id": "centro",
+      "name": "Centro",
+      "x": 0.35,
+      "y": 0.4,
+      "tags": ["center", "terminal"],
+      "population": {
+        "adults": 1400,
+        "children": 180,
+        "elderly": 120,
+        "patients": 30,
+        "essential_staff": 75,
+        "volunteer_drivers": 12,
+        "high_influence": 16
+      },
+      "panic": 12,
+      "trust": 55,
+      "danger": 8,
+      "collapse": 0,
+      "boarding_base_per_minute": 55,
+      "is_shelter": false,
+      "shelter_capacity": 0
+    },
+    {
+      "id": "hospital",
+      "name": "Hospital Municipal",
+      "x": 0.58,
+      "y": 0.34,
+      "tags": ["medical"],
+      "population": {
+        "adults": 220,
+        "children": 20,
+        "elderly": 80,
+        "patients": 60,
+        "essential_staff": 40,
+        "volunteer_drivers": 0,
+        "high_influence": 4
+      },
+      "panic": 18,
+      "trust": 62,
+      "danger": 12,
+      "collapse": 0,
+      "boarding_base_per_minute": 28,
+      "is_shelter": false,
+      "shelter_capacity": 0
+    },
+    {
+      "id": "terminal_oeste",
+      "name": "Terminal Oeste",
+      "x": 0.12,
+      "y": 0.6,
+      "tags": ["shelter", "terminal"],
+      "population": {
+        "adults": 0,
+        "children": 0,
+        "elderly": 0,
+        "patients": 0,
+        "essential_staff": 12,
+        "volunteer_drivers": 4,
+        "high_influence": 0
+      },
+      "panic": 3,
+      "trust": 70,
+      "danger": 2,
+      "collapse": 0,
+      "boarding_base_per_minute": 65,
+      "is_shelter": true,
+      "shelter_capacity": 2600
+    }
+  ],
+  "roads": [
+    {
+      "id": "road_centro_terminal",
+      "from": "centro",
+      "to": "terminal_oeste",
+      "length_km": 4.2,
+      "traffic": 30,
+      "blockade": 0,
+      "danger": 8,
+      "quality": 82,
+      "tags": ["avenue"]
+    },
+    {
+      "id": "road_hospital_terminal",
+      "from": "hospital",
+      "to": "terminal_oeste",
+      "length_km": 3.6,
+      "traffic": 18,
+      "blockade": 0,
+      "danger": 5,
+      "quality": 88,
+      "tags": ["avenue"]
+    },
+    {
+      "id": "road_centro_hospital",
+      "from": "centro",
+      "to": "hospital",
+      "length_km": 2.1,
+      "traffic": 45,
+      "blockade": 4,
+      "danger": 12,
+      "quality": 70,
+      "tags": ["street"]
+    }
+  ]
+}

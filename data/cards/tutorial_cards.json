@@ -1,0 +1,70 @@
+[
+  {
+    "id": "card_tutorial_clipboards",
+    "name": "Pranchetas de Triagem",
+    "class": "civic",
+    "rarity": "common",
+    "tags": ["tutorial", "queue", "boarding"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Organiza filas e reduz o tempo morto do embarque.",
+    "effects_by_level": [
+      { "boarding_rate_multiplier": 0.06 },
+      { "boarding_rate_multiplier": 0.12 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Caneta, fita e uma fila obediente ainda salvam o mundo."
+  },
+  {
+    "id": "card_tutorial_route_flags",
+    "name": "Bandeiras de Corredor",
+    "class": "logistics",
+    "rarity": "common",
+    "tags": ["tutorial", "route", "fuel"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Marca os acessos mais limpos e corta desperdicio de diesel.",
+    "effects_by_level": [
+      { "bus_fuel_consumption_multiplier": -0.05 },
+      { "bus_fuel_consumption_multiplier": -0.1 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Uma curva sinalizada vale um tanque."
+  },
+  {
+    "id": "card_tutorial_megaphones",
+    "name": "Megafones de Bairro",
+    "class": "communications",
+    "rarity": "common",
+    "tags": ["tutorial", "panic", "radio"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Leva instrucoes claras ate a ponta da fila.",
+    "effects_by_level": [
+      { "district_panic_add": -3, "boarding_rate_multiplier": 0.04 },
+      { "district_panic_add": -6, "boarding_rate_multiplier": 0.08 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Quando a rua escuta, o onibus enche."
+  },
+  {
+    "id": "card_tutorial_triage_tags",
+    "name": "Etiquetas de Triage",
+    "class": "medical",
+    "rarity": "uncommon",
+    "tags": ["tutorial", "medical", "queue"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Prioriza pacientes e idosos sem travar toda a fila.",
+    "effects_by_level": [
+      { "boarding_rate_multiplier": 0.05, "district_panic_add": -2 },
+      { "boarding_rate_multiplier": 0.1, "district_panic_add": -4 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Algumas cores certas diminuem o caos."
+  }
+]

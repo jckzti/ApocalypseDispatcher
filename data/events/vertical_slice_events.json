@@ -1,0 +1,392 @@
+[
+  {
+    "id": "event_fake_news_last_bus",
+    "title": "Boato do Ultimo Onibus",
+    "body": "Um áudio espalha que só resta um último ônibus saindo do centro. A fila está começando a implodir.",
+    "category": "social",
+    "tags": ["fake_news", "panic"],
+    "min_crisis_level": 0,
+    "weight": 14,
+    "cooldown_minutes": 90,
+    "trigger": { "min_elapsed_minutes": 14 },
+    "options": [
+      { "id": "correct_now", "label": "Corrigir pelo rádio", "requirements": {}, "effects": { "communication_add": -1, "trust_add": 2, "panic_add": -3 } },
+      { "id": "use_as_bait", "label": "Usar o boato para esvaziar um gargalo", "requirements": {}, "effects": { "order_add": 2, "panic_add": 2 } }
+    ]
+  },
+  {
+    "id": "event_fuel_depot_looted",
+    "title": "Saque no Deposito de Diesel",
+    "body": "O depósito improvisado começou a ser saqueado. Se a equipe não agir, a reserva some até o amanhecer.",
+    "category": "security",
+    "tags": ["diesel", "authority"],
+    "min_crisis_level": 1,
+    "weight": 13,
+    "cooldown_minutes": 120,
+    "trigger": { "min_elapsed_minutes": 22 },
+    "options": [
+      { "id": "send_guards", "label": "Mandar escolta e segurar o deposito", "requirements": {}, "effects": { "fuel_add": 90, "trust_add": -1 } },
+      { "id": "negotiate", "label": "Negociar uma retirada limpa", "requirements": {}, "effects": { "fuel_add": 40, "budget_add": -1, "trust_add": 1 } }
+    ]
+  },
+  {
+    "id": "event_bridge_crack",
+    "title": "Ponte Trincando",
+    "body": "Uma das passagens mais usadas começou a rachar no concreto. O próximo comboio decide se ela segue aberta ou não.",
+    "category": "route",
+    "tags": ["bridge", "danger"],
+    "min_crisis_level": 1,
+    "weight": 12,
+    "cooldown_minutes": 100,
+    "trigger": { "min_elapsed_minutes": 30 },
+    "options": [
+      { "id": "close_early", "label": "Fechar cedo e redirecionar", "requirements": {}, "effects": { "order_add": 2, "panic_add": -1 } },
+      { "id": "risk_one_more", "label": "Deixar passar mais um comboio", "requirements": {}, "effects": { "trust_add": 1, "panic_add": 2 } }
+    ]
+  },
+  {
+    "id": "event_hospital_plea",
+    "title": "Hospital Pede Prioridade",
+    "body": "A ala de pacientes frágeis do hospital pede prioridade total na próxima janela de evacuação.",
+    "category": "medical",
+    "tags": ["hospital", "moral"],
+    "min_crisis_level": 0,
+    "weight": 15,
+    "cooldown_minutes": 110,
+    "trigger": { "min_elapsed_minutes": 18 },
+    "options": [
+      { "id": "prioritize", "label": "Dar prioridade ao hospital", "requirements": {}, "effects": { "medical_supplies_add": -1, "trust_add": 2, "panic_add": -1 } },
+      { "id": "hold_plan", "label": "Manter o plano geral", "requirements": {}, "effects": { "order_add": 1, "trust_add": -2 } }
+    ]
+  },
+  {
+    "id": "event_driver_union",
+    "title": "Sindicato Exige Seguranca",
+    "body": "Motoristas mais exaustos ameaçam parar se as rotas piores continuarem sem proteção.",
+    "category": "faction",
+    "tags": ["fleet", "authority"],
+    "min_crisis_level": 1,
+    "weight": 11,
+    "cooldown_minutes": 100,
+    "trigger": { "min_elapsed_minutes": 34 },
+    "options": [
+      { "id": "give_rest", "label": "Ceder e reorganizar turnos", "requirements": {}, "effects": { "trust_add": 1, "order_add": -1 } },
+      { "id": "pressure", "label": "Pressionar a categoria", "requirements": {}, "effects": { "authority_add": 1, "trust_add": -2 } }
+    ]
+  },
+  {
+    "id": "event_influencer_leaks_route",
+    "title": "Influencer Revela Rota",
+    "body": "Um vídeo curto expôs uma rota segura em tempo real. A informação já está correndo pelas ruas.",
+    "category": "social",
+    "tags": ["media", "route"],
+    "min_crisis_level": 1,
+    "weight": 10,
+    "cooldown_minutes": 130,
+    "trigger": { "min_elapsed_minutes": 42 },
+    "options": [
+      { "id": "deny_fast", "label": "Desmentir e reembaralhar horários", "requirements": {}, "effects": { "communication_add": -1, "trust_add": 1, "panic_add": -1 } },
+      { "id": "redirect", "label": "Aceitar o vazamento e redirecionar", "requirements": {}, "effects": { "order_add": 2, "panic_add": 1 } }
+    ]
+  },
+  {
+    "id": "event_blackout",
+    "title": "Apagao Geral",
+    "body": "A rede cai em vários quarteirões ao mesmo tempo. Sem luz, rádio e fila pioram em minutos.",
+    "category": "collapse",
+    "tags": ["power", "radio"],
+    "min_crisis_level": 2,
+    "weight": 14,
+    "cooldown_minutes": 140,
+    "trigger": { "min_elapsed_minutes": 50 },
+    "options": [
+      { "id": "burn_generators", "label": "Queimar combustível em geradores", "requirements": {}, "effects": { "fuel_add": -80, "communication_add": 2, "panic_add": -2 } },
+      { "id": "ride_dark", "label": "Operar no escuro", "requirements": {}, "effects": { "communication_add": -2, "panic_add": 3 } }
+    ]
+  },
+  {
+    "id": "event_school_shelter_overflow",
+    "title": "Abrigo Escolar Lotado",
+    "body": "Um abrigo improvisado já não comporta mais famílias na fila. A rua está cobrando uma resposta agora.",
+    "category": "civic",
+    "tags": ["shelter", "children"],
+    "min_crisis_level": 1,
+    "weight": 12,
+    "cooldown_minutes": 150,
+    "trigger": { "min_elapsed_minutes": 58 },
+    "options": [
+      { "id": "expand_quick", "label": "Expandir com o que houver", "requirements": { "parts": 1 }, "effects": { "parts_add": -1, "trust_add": 2, "panic_add": -1 } },
+      { "id": "close_gates", "label": "Fechar as portas e redirecionar", "requirements": {}, "effects": { "order_add": 2, "trust_add": -2 } }
+    ]
+  },
+  {
+    "id": "event_illegal_checkpoint",
+    "title": "Pedagio Ilegal",
+    "body": "Uma barricada informal está cobrando passagem em um corredor já sobrecarregado.",
+    "category": "route",
+    "tags": ["route", "black_market"],
+    "min_crisis_level": 1,
+    "weight": 12,
+    "cooldown_minutes": 100,
+    "trigger": { "min_elapsed_minutes": 25 },
+    "options": [
+      { "id": "pay_fast", "label": "Pagar e limpar a passagem", "requirements": { "budget": 1 }, "effects": { "budget_add": -1, "order_add": 1 } },
+      { "id": "detour", "label": "Desviar e assumir atraso", "requirements": {}, "effects": { "panic_add": 1, "trust_add": -1 } }
+    ]
+  },
+  {
+    "id": "event_bus_missing",
+    "title": "Comboio Sumiu",
+    "body": "Um comboio atrasou tanto que a central já não sabe se está parado, bloqueado ou perdido.",
+    "category": "fleet",
+    "tags": ["fleet", "danger"],
+    "min_crisis_level": 2,
+    "weight": 10,
+    "cooldown_minutes": 150,
+    "trigger": { "min_elapsed_minutes": 72 },
+    "options": [
+      { "id": "send_rescue", "label": "Enviar busca e rádio extra", "requirements": {}, "effects": { "communication_add": -1, "trust_add": 2, "fuel_add": -40 } },
+      { "id": "hold_routes", "label": "Segurar a malha e esperar", "requirements": {}, "effects": { "order_add": 1, "trust_add": -2 } }
+    ]
+  },
+  {
+    "id": "event_children_at_terminal",
+    "title": "Criancas no Terminal Errado",
+    "body": "Um grupo de crianças chegou ao terminal errado seguindo um mapa falso distribuído no bairro.",
+    "category": "moral",
+    "tags": ["children", "panic"],
+    "min_crisis_level": 1,
+    "weight": 13,
+    "cooldown_minutes": 130,
+    "trigger": { "min_elapsed_minutes": 46 },
+    "options": [
+      { "id": "redirect_buses", "label": "Redirecionar um onibus", "requirements": {}, "effects": { "trust_add": 2, "order_add": -1 } },
+      { "id": "stabilize_terminal", "label": "Estabilizar o terminal e esperar", "requirements": {}, "effects": { "panic_add": -2, "trust_add": -1 } }
+    ]
+  },
+  {
+    "id": "event_fire_jumps_river",
+    "title": "Fogo Cruza o Rio",
+    "body": "As chamas saltaram para a outra margem e duas rotas antes seguras estão ameaçadas.",
+    "category": "collapse",
+    "tags": ["fire", "danger"],
+    "min_crisis_level": 2,
+    "weight": 11,
+    "cooldown_minutes": 160,
+    "trigger": { "min_elapsed_minutes": 84 },
+    "options": [
+      { "id": "evacuate_margin", "label": "Esvaziar a margem imediatamente", "requirements": {}, "effects": { "order_add": 2, "panic_add": 1 } },
+      { "id": "hold_line", "label": "Segurar a linha com informação", "requirements": {}, "effects": { "communication_add": -1, "trust_add": 1, "panic_add": -1 } }
+    ]
+  },
+  {
+    "id": "event_flooded_underpass",
+    "title": "Tunel Alagado",
+    "body": "Um túnel essencial virou corredor de água. A frota vai sentir isso nas próximas viagens.",
+    "category": "route",
+    "tags": ["flood", "route"],
+    "min_crisis_level": 1,
+    "weight": 12,
+    "cooldown_minutes": 130,
+    "trigger": { "min_elapsed_minutes": 38 },
+    "options": [
+      { "id": "block_tunnel", "label": "Bloquear o túnel agora", "requirements": {}, "effects": { "order_add": 2, "panic_add": -1 } },
+      { "id": "risk_crossing", "label": "Tentar mais uma janela", "requirements": {}, "effects": { "trust_add": 1, "panic_add": 2 } }
+    ]
+  },
+  {
+    "id": "event_volunteers_arrive",
+    "title": "Voluntarios Chegam",
+    "body": "Uma leva nova de voluntários apareceu com boa vontade e pouca coordenação.",
+    "category": "civic",
+    "tags": ["volunteer", "trust"],
+    "min_crisis_level": 0,
+    "weight": 15,
+    "cooldown_minutes": 120,
+    "trigger": { "min_elapsed_minutes": 16 },
+    "options": [
+      { "id": "organize", "label": "Organizar e absorver a ajuda", "requirements": {}, "effects": { "order_add": 1, "trust_add": 2 } },
+      { "id": "turn_away", "label": "Dispensar para manter disciplina", "requirements": {}, "effects": { "authority_add": 1, "trust_add": -1 } }
+    ]
+  },
+  {
+    "id": "event_panic_stampede",
+    "title": "Tumulto no Embarque",
+    "body": "Uma fila virou empurra-empurra e ameaça derrubar o embarque inteiro do quarteirão.",
+    "category": "social",
+    "tags": ["panic", "queue"],
+    "min_crisis_level": 1,
+    "weight": 15,
+    "cooldown_minutes": 90,
+    "trigger": { "min_elapsed_minutes": 28 },
+    "options": [
+      { "id": "pause_boarding", "label": "Parar a fila e reorganizar", "requirements": {}, "effects": { "panic_add": -3, "order_add": -1 } },
+      { "id": "push_through", "label": "Forçar o fluxo adiante", "requirements": {}, "effects": { "order_add": 2, "trust_add": -2 } }
+    ]
+  },
+  {
+    "id": "event_radio_silence",
+    "title": "Silencio no Radio",
+    "body": "Uma janela de silêncio derrubou confirmações entre distritos e abrigos.",
+    "category": "communication",
+    "tags": ["radio", "communications"],
+    "min_crisis_level": 1,
+    "weight": 11,
+    "cooldown_minutes": 140,
+    "trigger": { "min_elapsed_minutes": 60 },
+    "options": [
+      { "id": "send_team", "label": "Mandar equipe para restabelecer enlace", "requirements": {}, "effects": { "communication_add": 2, "fuel_add": -30 } },
+      { "id": "blind_dispatch", "label": "Despachar no escuro por uma hora", "requirements": {}, "effects": { "communication_add": -2, "order_add": 1 } }
+    ]
+  },
+  {
+    "id": "event_mayor_calls",
+    "title": "Ligacao do Prefeito",
+    "body": "O gabinete exige prioridade para uma área politicamente sensível que ainda não era a mais crítica.",
+    "category": "faction",
+    "tags": ["authority", "high_influence"],
+    "min_crisis_level": 1,
+    "weight": 10,
+    "cooldown_minutes": 180,
+    "trigger": { "min_elapsed_minutes": 76 },
+    "options": [
+      { "id": "obey", "label": "Obedecer e comprar paz política", "requirements": {}, "effects": { "authority_add": 1, "trust_add": -1 } },
+      { "id": "refuse", "label": "Recusar e manter a malha técnica", "requirements": {}, "effects": { "trust_add": 1, "authority_add": -1 } }
+    ]
+  },
+  {
+    "id": "event_militia_offer",
+    "title": "Milicia Oferece Escolta",
+    "body": "Uma escolta extraoficial oferece corredor seguro por um preço político que ninguém vai esquecer.",
+    "category": "security",
+    "tags": ["black_market", "authority"],
+    "min_crisis_level": 2,
+    "weight": 9,
+    "cooldown_minutes": 190,
+    "trigger": { "min_elapsed_minutes": 92 },
+    "options": [
+      { "id": "accept_dirty", "label": "Aceitar a oferta", "requirements": {}, "effects": { "fuel_add": 60, "authority_add": 1, "trust_add": -2 } },
+      { "id": "refuse_clean", "label": "Recusar e manter controle oficial", "requirements": {}, "effects": { "trust_add": 1, "order_add": -1 } }
+    ]
+  },
+  {
+    "id": "event_refinery_blast",
+    "title": "Explosao na Refinaria",
+    "body": "Uma explosão industrial abriu uma nova coluna de fumaça e ameaça contaminar corredores de fuga.",
+    "category": "collapse",
+    "tags": ["industrial", "fuel"],
+    "min_crisis_level": 2,
+    "weight": 11,
+    "cooldown_minutes": 180,
+    "trigger": { "min_elapsed_minutes": 104 },
+    "options": [
+      { "id": "contain_edge", "label": "Conter a borda do desastre", "requirements": {}, "effects": { "parts_add": -1, "panic_add": -1, "trust_add": 1 } },
+      { "id": "clear_out", "label": "Evacuar a zona industrial inteira", "requirements": {}, "effects": { "order_add": 2, "fuel_add": -60 } }
+    ]
+  },
+  {
+    "id": "event_false_safe_zone",
+    "title": "Zona Segura Falsa",
+    "body": "Uma indicação errada de zona segura virou ponto de aglomeração e está drenando confiança.",
+    "category": "social",
+    "tags": ["fake_news", "trust"],
+    "min_crisis_level": 2,
+    "weight": 10,
+    "cooldown_minutes": 160,
+    "trigger": { "min_elapsed_minutes": 118 },
+    "options": [
+      { "id": "admit_fast", "label": "Admitir o erro e redirecionar", "requirements": {}, "effects": { "trust_add": -1, "communication_add": 1, "panic_add": -2 } },
+      { "id": "bury_story", "label": "Encobrir e puxar a fila em silêncio", "requirements": {}, "effects": { "order_add": 2, "trust_add": -3 } }
+    ]
+  },
+  {
+    "id": "event_shelter_infection",
+    "title": "Surto no Abrigo",
+    "body": "Um abrigo lotado começou a registrar febre e desmaios em fila fechada.",
+    "category": "medical",
+    "tags": ["shelter", "medical"],
+    "min_crisis_level": 2,
+    "weight": 12,
+    "cooldown_minutes": 150,
+    "trigger": { "min_elapsed_minutes": 86 },
+    "options": [
+      { "id": "quarantine", "label": "Isolar alas e gastar estoque", "requirements": { "medical_supplies": 2 }, "effects": { "medical_supplies_add": -2, "panic_add": -1, "trust_add": 1 } },
+      { "id": "disperse", "label": "Dispersar para outros pontos", "requirements": {}, "effects": { "order_add": 2, "trust_add": -2 } }
+    ]
+  },
+  {
+    "id": "event_elderly_home",
+    "title": "Asilo Isolado",
+    "body": "Um asilo inteiro ficou isolado atrás de um corredor que já não inspira confiança.",
+    "category": "moral",
+    "tags": ["elderly", "medical"],
+    "min_crisis_level": 1,
+    "weight": 11,
+    "cooldown_minutes": 170,
+    "trigger": { "min_elapsed_minutes": 68 },
+    "options": [
+      { "id": "special_route", "label": "Abrir rota especial", "requirements": {}, "effects": { "trust_add": 2, "fuel_add": -50 } },
+      { "id": "delay_pickup", "label": "Aguardar janela mais segura", "requirements": {}, "effects": { "order_add": 1, "trust_add": -2 } }
+    ]
+  },
+  {
+    "id": "event_rain_of_ash",
+    "title": "Chuva de Cinzas",
+    "body": "Cinza pesada caiu sobre a cidade e reduziu visibilidade, respiração e ritmo de embarque.",
+    "category": "collapse",
+    "tags": ["ash", "visibility"],
+    "min_crisis_level": 3,
+    "weight": 9,
+    "cooldown_minutes": 190,
+    "trigger": { "min_elapsed_minutes": 126 },
+    "options": [
+      { "id": "slow_convoys", "label": "Reduzir o passo e preservar a fila", "requirements": {}, "effects": { "panic_add": -1, "order_add": -1 } },
+      { "id": "push_masks", "label": "Improvisar máscaras e manter o fluxo", "requirements": {}, "effects": { "parts_add": -1, "trust_add": 1, "order_add": 1 } }
+    ]
+  },
+  {
+    "id": "event_anomaly_red_signal",
+    "title": "Sinal Vermelho Permanente",
+    "body": "Um cruzamento travou em vermelho contínuo e moradores juram que nenhum agente humano tocou naquele sistema.",
+    "category": "anomaly",
+    "tags": ["anomaly", "route"],
+    "min_crisis_level": 3,
+    "weight": 8,
+    "cooldown_minutes": 220,
+    "trigger": { "min_elapsed_minutes": 138 },
+    "options": [
+      { "id": "obey_signal", "label": "Obedecer e contornar", "requirements": {}, "effects": { "trust_add": 1, "order_add": -1 } },
+      { "id": "ignore_signal", "label": "Ignorar o sinal e passar", "requirements": {}, "effects": { "order_add": 2, "panic_add": 2 } }
+    ]
+  },
+  {
+    "id": "event_population_refuses",
+    "title": "Bairro Recusa Evacuacao",
+    "body": "Parte do bairro concluiu que sair agora é mais perigoso do que ficar e começou a resistir às ordens.",
+    "category": "social",
+    "tags": ["trust", "panic"],
+    "min_crisis_level": 2,
+    "weight": 10,
+    "cooldown_minutes": 160,
+    "trigger": { "min_elapsed_minutes": 112 },
+    "options": [
+      { "id": "convince", "label": "Convencer com rádio e equipe local", "requirements": {}, "effects": { "communication_add": -1, "trust_add": 2 } },
+      { "id": "force", "label": "Forçar a retirada", "requirements": {}, "effects": { "authority_add": 1, "trust_add": -3, "panic_add": 1 } }
+    ]
+  },
+  {
+    "id": "event_command_center_threatened",
+    "title": "Central Ameacada",
+    "body": "O entorno do comando está piorando rápido. Se a central cair, a malha inteira entra em ruído.",
+    "category": "collapse",
+    "tags": ["command_center", "danger"],
+    "min_crisis_level": 3,
+    "weight": 10,
+    "cooldown_minutes": 220,
+    "trigger": { "min_elapsed_minutes": 150 },
+    "options": [
+      { "id": "fortify_center", "label": "Fortificar a central", "requirements": { "parts": 2 }, "effects": { "parts_add": -2, "trust_add": 1, "panic_add": -1 } },
+      { "id": "prepare_relocation", "label": "Preparar mudança parcial", "requirements": {}, "effects": { "order_add": 1, "communication_add": 1, "trust_add": -1 } }
+    ]
+  }
+]

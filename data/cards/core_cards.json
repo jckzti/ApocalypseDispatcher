@@ -1,0 +1,138 @@
+[
+  {
+    "id": "card_public_map",
+    "name": "Mapa Publico",
+    "class": "communications",
+    "rarity": "common",
+    "tags": ["intel", "routing"],
+    "min_crisis_level": 0,
+    "max_level": 3,
+    "description": "Divulga rotas oficiais e reduz ruido nas ordens.",
+    "effects_by_level": [
+      { "boarding_rate_multiplier": 0.08, "district_panic_add": -2 },
+      { "boarding_rate_multiplier": 0.14, "district_panic_add": -4 },
+      { "boarding_rate_multiplier": 0.2, "district_panic_add": -6 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Uma cidade informada embarca mais rapido."
+  },
+  {
+    "id": "card_fuel_rationing",
+    "name": "Racionamento de Diesel",
+    "class": "logistics",
+    "rarity": "common",
+    "tags": ["fuel", "fleet"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Padroniza o consumo da frota em rotas longas.",
+    "effects_by_level": [
+      { "bus_fuel_consumption_multiplier": -0.08 },
+      { "bus_fuel_consumption_multiplier": -0.15 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Menos luxo. Mais quilometros por tanque."
+  },
+  {
+    "id": "card_dispatch_training",
+    "name": "Treino de Despacho",
+    "class": "civic",
+    "rarity": "common",
+    "tags": ["volunteer", "route"],
+    "min_crisis_level": 0,
+    "max_level": 3,
+    "description": "Padroniza filas e acelera triagem de embarque.",
+    "effects_by_level": [
+      { "boarding_rate_multiplier": 0.12 },
+      { "boarding_rate_multiplier": 0.2 },
+      { "boarding_rate_multiplier": 0.28 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Fila boa tambem salva cidade."
+  },
+  {
+    "id": "card_radio_boosters",
+    "name": "Amplificadores de Sirene",
+    "class": "communications",
+    "rarity": "uncommon",
+    "tags": ["radio", "siren", "trust"],
+    "min_crisis_level": 1,
+    "max_level": 2,
+    "description": "Fortalece instrucoes publicas e reduz panico local.",
+    "effects_by_level": [
+      { "district_panic_add": -8, "boarding_rate_multiplier": 0.06 },
+      { "district_panic_add": -14, "boarding_rate_multiplier": 0.1 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Quando o som chega longe, a fila anda."
+  },
+  {
+    "id": "card_priority_convoy",
+    "name": "Comboio Prioritario",
+    "class": "logistics",
+    "rarity": "rare",
+    "tags": ["convoy", "diesel", "route"],
+    "min_crisis_level": 1,
+    "max_level": 2,
+    "description": "Organiza comboios com menos espera e menor consumo por parada.",
+    "effects_by_level": [
+      { "bus_fuel_consumption_multiplier": -0.15, "boarding_rate_multiplier": 0.1 },
+      { "bus_fuel_consumption_multiplier": -0.22, "boarding_rate_multiplier": 0.16 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Menos caos no asfalto, mais gente no abrigo."
+  },
+  {
+    "id": "card_shelter_captains",
+    "name": "Capitaes de Abrigo",
+    "class": "civic",
+    "rarity": "rare",
+    "tags": ["shelter", "trust", "volunteer"],
+    "min_crisis_level": 2,
+    "max_level": 2,
+    "description": "Liderancas locais preparam desembarque e aceleram novo embarque.",
+    "effects_by_level": [
+      { "boarding_rate_multiplier": 0.18, "district_panic_add": -6 },
+      { "boarding_rate_multiplier": 0.28, "district_panic_add": -10 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Abrigo organizado devolve ritmo a cidade."
+  },
+  {
+    "id": "card_black_diesel",
+    "name": "Diesel de Procedencia Duvidosa",
+    "class": "black_market",
+    "rarity": "epic",
+    "tags": ["black_market", "diesel", "high_risk"],
+    "min_crisis_level": 3,
+    "max_level": 1,
+    "description": "Corta consumo e ignora gargalos, ao custo de tensao permanente.",
+    "effects_by_level": [
+      { "bus_fuel_consumption_multiplier": -0.3, "district_panic_add": 4 }
+    ],
+    "requirements": {},
+    "exclusive_group": "fuel_source",
+    "flavor": "Funciona. Isso nao significa que seja uma boa ideia."
+  },
+  {
+    "id": "card_legend_signal",
+    "name": "Sinal da Ultima Torre",
+    "class": "communications",
+    "rarity": "legendary",
+    "tags": ["radio", "trust", "panic"],
+    "min_crisis_level": 4,
+    "max_level": 1,
+    "description": "A cidade inteira ouve a mesma ordem e obedece por um breve milagre.",
+    "effects_by_level": [
+      { "boarding_rate_multiplier": 0.4, "district_panic_add": -15 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Por alguns minutos, a sirene vence o apocalipse."
+  }
+]

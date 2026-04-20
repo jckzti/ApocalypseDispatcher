@@ -1,0 +1,410 @@
+[
+  {
+    "id": "card_extra_driver_shift",
+    "name": "Turno Extra de Motoristas",
+    "class": "logistics",
+    "rarity": "common",
+    "tags": ["convoy", "fatigue"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Estica o turno dos motoristas para manter a frota rodando sem intervalo.",
+    "effects_by_level": [
+      { "boarding_rate_multiplier": 0.08, "bus_fuel_consumption_multiplier": 0.03 },
+      { "boarding_rate_multiplier": 0.14, "bus_fuel_consumption_multiplier": 0.05 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Mais estrada hoje. A conta chega amanha."
+  },
+  {
+    "id": "card_auxiliary_tanks",
+    "name": "Tanques Auxiliares",
+    "class": "logistics",
+    "rarity": "uncommon",
+    "tags": ["diesel", "convoy"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Improvisa reserva de diesel para aliviar retornos longos.",
+    "effects_by_level": [
+      { "bus_fuel_consumption_multiplier": -0.06 },
+      { "bus_fuel_consumption_multiplier": -0.11 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Nao aumenta o tanque. Faz o tanque parecer maior."
+  },
+  {
+    "id": "card_express_boarding",
+    "name": "Embarque em Fila Dupla",
+    "class": "logistics",
+    "rarity": "common",
+    "tags": ["route", "queue"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Dobra o corredor de embarque e acelera a fila, mas cobra calma da multidão.",
+    "effects_by_level": [
+      { "boarding_rate_multiplier": 0.16, "district_panic_add": 1 },
+      { "boarding_rate_multiplier": 0.24, "district_panic_add": 2 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Duas filas funcionam melhor ate alguem entrar em pânico."
+  },
+  {
+    "id": "card_articulated_buses",
+    "name": "Onibus Articulados",
+    "class": "logistics",
+    "rarity": "rare",
+    "tags": ["convoy", "route"],
+    "min_crisis_level": 1,
+    "max_level": 2,
+    "description": "Padroniza o embarque para aproveitar melhor veículos grandes.",
+    "effects_by_level": [
+      { "boarding_rate_multiplier": 0.18, "district_danger_add": 1 },
+      { "boarding_rate_multiplier": 0.26, "district_danger_add": 1 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Cabe mais gente. Tambem cabe mais confusao nas curvas."
+  },
+  {
+    "id": "card_night_routes",
+    "name": "Rotas Noturnas",
+    "class": "logistics",
+    "rarity": "uncommon",
+    "tags": ["night_ops", "route"],
+    "min_crisis_level": 1,
+    "max_level": 2,
+    "description": "Empurra comboios para horarios vazios, cortando atraso e desgaste.",
+    "effects_by_level": [
+      { "bus_fuel_consumption_multiplier": -0.04, "district_danger_add": 1 },
+      { "bus_fuel_consumption_multiplier": -0.08, "district_danger_add": 2 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "A rua dorme. O risco nao."
+  },
+  {
+    "id": "card_dispatch_algorithm",
+    "name": "Algoritmo de Despacho",
+    "class": "logistics",
+    "rarity": "epic",
+    "tags": ["intelligence", "route"],
+    "min_crisis_level": 1,
+    "max_level": 2,
+    "description": "Encontra janelas melhores de embarque e corta viagens ociosas.",
+    "effects_by_level": [
+      { "boarding_rate_multiplier": 0.12, "bus_fuel_consumption_multiplier": -0.08, "collapse_base_threat_rate_multiplier": -0.05 },
+      { "boarding_rate_multiplier": 0.18, "bus_fuel_consumption_multiplier": -0.12, "collapse_base_threat_rate_multiplier": -0.08 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "A planilha certa vira milagre operacional."
+  },
+  {
+    "id": "card_radio_ham_network",
+    "name": "Rede de Radio Amador",
+    "class": "communications",
+    "rarity": "uncommon",
+    "tags": ["radio", "trust"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Operadores civis ampliam o alcance dos avisos e reduzem boatos locais.",
+    "effects_by_level": [
+      { "district_panic_add": -4, "boarding_rate_multiplier": 0.04 },
+      { "district_panic_add": -8, "boarding_rate_multiplier": 0.08 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Quando a cidade some do radar, sempre sobra um radio teimoso."
+  },
+  {
+    "id": "card_trusted_spokesperson",
+    "name": "Porta-voz Confiavel",
+    "class": "communications",
+    "rarity": "rare",
+    "tags": ["trust", "media"],
+    "min_crisis_level": 1,
+    "max_level": 2,
+    "description": "Centraliza a mensagem pública e reduz corridas por pânico.",
+    "effects_by_level": [
+      { "district_panic_add": -6, "attrition_multiplier": -0.04 },
+      { "district_panic_add": -10, "attrition_multiplier": -0.08 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Uma voz estável vale mais que dez sirenes."
+  },
+  {
+    "id": "card_sirens",
+    "name": "Sirenes de Bairro",
+    "class": "communications",
+    "rarity": "common",
+    "tags": ["siren", "warning"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Aciona avisos locais antes que a rua entre em desordem.",
+    "effects_by_level": [
+      { "district_panic_add": -4 },
+      { "district_panic_add": -7 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Todo bairro entende o idioma da sirene."
+  },
+  {
+    "id": "card_anti_rumor_cell",
+    "name": "Central Antiboato",
+    "class": "communications",
+    "rarity": "epic",
+    "tags": ["fake_news", "radio"],
+    "min_crisis_level": 2,
+    "max_level": 2,
+    "description": "Corta boatos antes de virarem correria ou fuga desordenada.",
+    "effects_by_level": [
+      { "district_panic_add": -10, "collapse_base_threat_rate_multiplier": -0.05 },
+      { "district_panic_add": -15, "collapse_base_threat_rate_multiplier": -0.08 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "A melhor resposta ao boato e chegar antes dele."
+  },
+  {
+    "id": "card_local_megaphones",
+    "name": "Carros de Som",
+    "class": "communications",
+    "rarity": "common",
+    "tags": ["trust", "radio"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Leva instruções simples direto para os bairros mais barulhentos.",
+    "effects_by_level": [
+      { "district_panic_add": -3, "boarding_rate_multiplier": 0.03 },
+      { "district_panic_add": -6, "boarding_rate_multiplier": 0.06 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "A mensagem precisa caber na rua, nao só na central."
+  },
+  {
+    "id": "card_backup_power",
+    "name": "Geradores para Torres",
+    "class": "communications",
+    "rarity": "rare",
+    "tags": ["radio", "engineer"],
+    "min_crisis_level": 1,
+    "max_level": 2,
+    "description": "Segura comunicações críticas quando a infraestrutura começa a falhar.",
+    "effects_by_level": [
+      { "collapse_base_threat_rate_multiplier": -0.05, "road_danger_from_collapse_multiplier": -0.08 },
+      { "collapse_base_threat_rate_multiplier": -0.09, "road_danger_from_collapse_multiplier": -0.14 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Uma torre acesa impede uma cidade inteira de sumir."
+  },
+  {
+    "id": "card_armed_escort",
+    "name": "Escolta Armada",
+    "class": "security",
+    "rarity": "uncommon",
+    "tags": ["authority", "convoy"],
+    "min_crisis_level": 1,
+    "max_level": 2,
+    "description": "Abre corredores mais hostis, mas deixa a operação mais tensa.",
+    "effects_by_level": [
+      { "district_danger_add": -3, "district_panic_add": 1 },
+      { "district_danger_add": -5, "district_panic_add": 2 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Passa primeiro. Cobra depois."
+  },
+  {
+    "id": "card_curfew",
+    "name": "Toque de Recolher",
+    "class": "security",
+    "rarity": "rare",
+    "tags": ["authority", "order"],
+    "min_crisis_level": 1,
+    "max_level": 2,
+    "description": "Segura ruas mais caóticas e compra algum fôlego operacional.",
+    "effects_by_level": [
+      { "district_danger_add": -4, "district_panic_add": 2 },
+      { "district_danger_add": -6, "district_panic_add": 3 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Menos rua para o caos. Menos rua para todo mundo."
+  },
+  {
+    "id": "card_checkpoint_grid",
+    "name": "Rede de Barreiras",
+    "class": "security",
+    "rarity": "common",
+    "tags": ["barricade", "route"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Segmenta o fluxo urbano e reduz saques, mas também atrasa o embarque.",
+    "effects_by_level": [
+      { "district_danger_add": -2, "boarding_rate_multiplier": -0.03 },
+      { "district_danger_add": -4, "boarding_rate_multiplier": -0.05 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Cada barreira segura um quarteirão e irrita dois."
+  },
+  {
+    "id": "card_armored_convoy",
+    "name": "Comboio Blindado",
+    "class": "security",
+    "rarity": "epic",
+    "tags": ["convoy", "authority"],
+    "min_crisis_level": 2,
+    "max_level": 2,
+    "description": "Faz a frota atravessar trechos críticos com perda menor de tempo e bloqueio.",
+    "effects_by_level": [
+      { "bus_fuel_consumption_multiplier": -0.08, "road_blockade_from_collapse_multiplier": -0.15, "road_danger_from_collapse_multiplier": -0.12 },
+      { "bus_fuel_consumption_multiplier": -0.12, "road_blockade_from_collapse_multiplier": -0.22, "road_danger_from_collapse_multiplier": -0.18 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Nao vence o colapso. Só passa por dentro dele."
+  },
+  {
+    "id": "card_triage_teams",
+    "name": "Equipes de Triagem",
+    "class": "medical",
+    "rarity": "common",
+    "tags": ["hospital", "queue"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Organiza embarque de pacientes e reduz mortes de coortes frágeis.",
+    "effects_by_level": [
+      { "boarding_rate_multiplier": 0.06, "attrition_multiplier": -0.08 },
+      { "boarding_rate_multiplier": 0.1, "attrition_multiplier": -0.12 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Identificar rápido salva antes mesmo do embarque."
+  },
+  {
+    "id": "card_adapted_buses",
+    "name": "Onibus Adaptados",
+    "class": "medical",
+    "rarity": "uncommon",
+    "tags": ["hospital", "convoy"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Melhora embarque de pacientes sem travar a fila inteira.",
+    "effects_by_level": [
+      { "boarding_rate_multiplier": 0.08, "district_panic_add": -1 },
+      { "boarding_rate_multiplier": 0.14, "district_panic_add": -2 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Uma rampa certa vale um corredor inteiro."
+  },
+  {
+    "id": "card_mobile_clinic",
+    "name": "Clinica Movel",
+    "class": "medical",
+    "rarity": "rare",
+    "tags": ["hospital", "field"],
+    "min_crisis_level": 1,
+    "max_level": 2,
+    "description": "Leva atendimento mínimo até bairros que ainda não conseguem sair.",
+    "effects_by_level": [
+      { "attrition_multiplier": -0.14, "district_panic_add": -2 },
+      { "attrition_multiplier": -0.22, "district_panic_add": -4 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Nem todo cuidado precisa esperar o abrigo."
+  },
+  {
+    "id": "card_field_hospital",
+    "name": "Hospital de Campanha",
+    "class": "medical",
+    "rarity": "epic",
+    "tags": ["shelter", "hospital"],
+    "min_crisis_level": 2,
+    "max_level": 2,
+    "description": "Segura a linha de vida das coortes vulneráveis enquanto a cidade afunda.",
+    "effects_by_level": [
+      { "attrition_multiplier": -0.22, "district_collapse_delta_multiplier": -0.08 },
+      { "attrition_multiplier": -0.3, "district_collapse_delta_multiplier": -0.14 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Não substitui um hospital. Mas substitui o nada."
+  },
+  {
+    "id": "card_neighborhood_committees",
+    "name": "Comites de Bairro",
+    "class": "civic",
+    "rarity": "common",
+    "tags": ["volunteer", "trust"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Vizinhança organizada reduz desordem antes da frota chegar.",
+    "effects_by_level": [
+      { "district_panic_add": -4 },
+      { "district_panic_add": -7 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Uma rua se comporta melhor quando alguém da rua assume a fila."
+  },
+  {
+    "id": "card_community_kitchens",
+    "name": "Cozinhas Comunitarias",
+    "class": "civic",
+    "rarity": "uncommon",
+    "tags": ["volunteer", "trust", "shelter"],
+    "min_crisis_level": 1,
+    "max_level": 2,
+    "description": "Alivia pânico em pontos de espera e segura um pouco da mortalidade.",
+    "effects_by_level": [
+      { "district_panic_add": -5, "attrition_multiplier": -0.04 },
+      { "district_panic_add": -8, "attrition_multiplier": -0.08 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Fila com água quente pensa menos em correr."
+  },
+  {
+    "id": "card_bridge_bailey",
+    "name": "Ponte Bailey",
+    "class": "engineering",
+    "rarity": "epic",
+    "tags": ["bridge", "engineer"],
+    "min_crisis_level": 2,
+    "max_level": 2,
+    "description": "Segura conexões frágeis e atrasa o estrangulamento da malha.",
+    "effects_by_level": [
+      { "road_blockade_from_collapse_multiplier": -0.24, "road_danger_from_collapse_multiplier": -0.16 },
+      { "road_blockade_from_collapse_multiplier": -0.34, "road_danger_from_collapse_multiplier": -0.24 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Nem toda ponte precisa ser bonita. Só precisa aguentar hoje."
+  },
+  {
+    "id": "card_road_crews",
+    "name": "Equipes de Desobstrucao",
+    "class": "engineering",
+    "rarity": "common",
+    "tags": ["engineer", "route"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Mantém vias críticas abertas por mais tempo.",
+    "effects_by_level": [
+      { "road_blockade_from_collapse_multiplier": -0.12 },
+      { "road_blockade_from_collapse_multiplier": -0.2 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Toda cidade se salva um pouco na pá e no cones."
+  }
+]

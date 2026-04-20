@@ -1,0 +1,102 @@
+[
+  {
+    "id": "event_tutorial_radio_call",
+    "title": "Radio da Defesa Civil",
+    "body": "A defesa civil oferece uma mensagem curta para orientar a fila. E a primeira chance de testar a resposta da equipe.",
+    "category": "social",
+    "tags": ["tutorial", "radio"],
+    "min_crisis_level": 0,
+    "weight": 100,
+    "cooldown_minutes": 9999,
+    "trigger": { "min_elapsed_minutes": 2, "max_elapsed_minutes": 4 },
+    "options": [
+      {
+        "id": "broadcast",
+        "label": "Transmitir a mensagem oficial",
+        "requirements": {},
+        "effects": { "communication_add": 1, "trust_add": 2, "panic_add": -2 }
+      },
+      {
+        "id": "skip",
+        "label": "Seguir sem interromper a fila",
+        "requirements": {},
+        "effects": { "order_add": 1 }
+      }
+    ]
+  },
+  {
+    "id": "event_tutorial_triage_lane",
+    "title": "Faixa de Triage",
+    "body": "A clinica pede uma faixa rapida para idosos e pacientes. A decisao mexe com ritmo e suprimentos.",
+    "category": "moral",
+    "tags": ["tutorial", "medical"],
+    "min_crisis_level": 0,
+    "weight": 100,
+    "cooldown_minutes": 9999,
+    "trigger": { "min_elapsed_minutes": 5, "max_elapsed_minutes": 7 },
+    "options": [
+      {
+        "id": "open_lane",
+        "label": "Abrir faixa de triage",
+        "requirements": { "medical_supplies": 1 },
+        "effects": { "medical_supplies_add": -1, "trust_add": 1, "panic_add": -1 }
+      },
+      {
+        "id": "hold_line",
+        "label": "Manter a fila unica",
+        "requirements": {},
+        "effects": { "order_add": 2, "trust_add": -1 }
+      }
+    ]
+  },
+  {
+    "id": "event_tutorial_diesel_tip",
+    "title": "Aviso sobre Diesel",
+    "body": "Um motorista voluntario indica um posto ainda funcional perto do ginasio. Pode ser um reforco simples para a rota.",
+    "category": "route",
+    "tags": ["tutorial", "fuel"],
+    "min_crisis_level": 0,
+    "weight": 100,
+    "cooldown_minutes": 9999,
+    "trigger": { "min_elapsed_minutes": 8, "max_elapsed_minutes": 10 },
+    "options": [
+      {
+        "id": "send_runner",
+        "label": "Aproveitar o posto agora",
+        "requirements": {},
+        "effects": { "fuel_add": 40, "budget_add": -1 }
+      },
+      {
+        "id": "ignore_tip",
+        "label": "Nao desviar a operacao",
+        "requirements": {},
+        "effects": { "trust_add": 1 }
+      }
+    ]
+  },
+  {
+    "id": "event_tutorial_queue_wave",
+    "title": "Onda na Fila",
+    "body": "Boatos sobre falta de espaco no abrigo circulam pela rua. A equipe precisa agir antes de perder o ritmo.",
+    "category": "social",
+    "tags": ["tutorial", "panic"],
+    "min_crisis_level": 0,
+    "weight": 100,
+    "cooldown_minutes": 9999,
+    "trigger": { "min_elapsed_minutes": 11, "max_elapsed_minutes": 14 },
+    "options": [
+      {
+        "id": "speak_plainly",
+        "label": "Explicar a capacidade do abrigo",
+        "requirements": {},
+        "effects": { "trust_add": 2, "panic_add": -3 }
+      },
+      {
+        "id": "tighten_queue",
+        "label": "Fechar a fila e acelerar embarque",
+        "requirements": {},
+        "effects": { "order_add": 2, "communication_add": -1 }
+      }
+    ]
+  }
+]

@@ -1,0 +1,71 @@
+[
+  {
+    "id": "card_cinza_rooftop_beacons",
+    "name": "Balizas de Cobertura",
+    "class": "communications",
+    "rarity": "uncommon",
+    "tags": ["city_cinza", "radio", "panic"],
+    "min_crisis_level": 0,
+    "max_level": 2,
+    "description": "Sinalizadores nos telhados coordenam filas e acalmam bairros inteiros.",
+    "effects_by_level": [
+      { "district_panic_add": -5, "boarding_rate_multiplier": 0.05 },
+      { "district_panic_add": -9, "boarding_rate_multiplier": 0.1 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Cada telhado vira um farol de ordem."
+  },
+  {
+    "id": "card_cinza_bridge_clearance",
+    "name": "Escolta de Viaduto",
+    "class": "logistics",
+    "rarity": "rare",
+    "tags": ["city_cinza", "bridge", "fuel"],
+    "min_crisis_level": 1,
+    "max_level": 2,
+    "description": "Abre passagem nos viadutos mais lentos e reduz o desgaste da frota.",
+    "effects_by_level": [
+      { "bus_fuel_consumption_multiplier": -0.12, "boarding_rate_multiplier": 0.06 },
+      { "bus_fuel_consumption_multiplier": -0.18, "boarding_rate_multiplier": 0.1 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Menos freio, mais abrigo."
+  },
+  {
+    "id": "card_cinza_mutual_aid",
+    "name": "Mutirao de Quarteirao",
+    "class": "civic",
+    "rarity": "uncommon",
+    "tags": ["city_cinza", "volunteer", "queue"],
+    "min_crisis_level": 0,
+    "max_level": 3,
+    "description": "Voluntarios locais organizam triagem, carga e desembarque.",
+    "effects_by_level": [
+      { "boarding_rate_multiplier": 0.08, "district_panic_add": -2 },
+      { "boarding_rate_multiplier": 0.14, "district_panic_add": -4 },
+      { "boarding_rate_multiplier": 0.2, "district_panic_add": -6 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "O bairro se move quando alguem assume o megafone."
+  },
+  {
+    "id": "card_cinza_patchwork_filters",
+    "name": "Filtros de Remendo",
+    "class": "engineering",
+    "rarity": "rare",
+    "tags": ["city_cinza", "maintenance", "danger"],
+    "min_crisis_level": 1,
+    "max_level": 2,
+    "description": "Remendos de campo seguram infiltrações e atrasam o avanço do perigo.",
+    "effects_by_level": [
+      { "district_danger_add": -2, "bus_fuel_consumption_multiplier": -0.04 },
+      { "district_danger_add": -4, "bus_fuel_consumption_multiplier": -0.08 }
+    ],
+    "requirements": {},
+    "exclusive_group": null,
+    "flavor": "Nao e bonito, mas aguenta mais um turno."
+  }
+]
