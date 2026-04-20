@@ -1,7 +1,7 @@
 extends Node
 
 const PROJECT_NAME := "Despachante do Apocalipse"
-const CURRENT_PHASE := "Fase 24"
+const CURRENT_PHASE := "Fase 25"
 
 func get_bootstrap_summary() -> Dictionary:
 	return {
